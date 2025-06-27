@@ -337,7 +337,6 @@ body {
    color: #856404 !important;
 }
 
-/* NUOVO: Sezione trasferimenti separata */
 .transfers-section {
    background-color: #f0f8ff;
    border: 1px solid #17a2b8;
@@ -475,17 +474,6 @@ body {
    line-height: 1.2;
 }
 
-.transfer-composition-details {
-   font-size: 10px;
-   color: #856404;
-   margin-top: 3px;
-   background-color: #fff3cd;
-   padding: 4px;
-   border-radius: 3px;
-   border: 1px solid #ffc107;
-   line-height: 1.2;
-}
-
 .hidden-field {
    display: none;
 }
@@ -544,6 +532,8 @@ body {
    width: 60px;
    font-size: 11px;
    padding: 2px;
+   border: 1px solid #000000;
+   border-radius: 3px;
 }
 
 .remaining-qty {
@@ -688,7 +678,124 @@ body {
    resize: vertical;
 }
 
-/* MODIFICATA: Stampa con tabella migliorata, testo in grassetto e carattere aumentato */
+/* Tabella per stampa */
+.print-table {
+   display: none;
+   width: 100%;
+   border-collapse: collapse;
+   margin-bottom: 10px;
+   font-size: 9px;
+}
+
+.print-table-header {
+   display: table-header-group;
+   background-color: #1e3c72;
+   color: #ffffff;
+   font-weight: bold;
+}
+
+.print-table-body {
+   display: table-row-group;
+}
+
+.print-table-row {
+   display: table-row;
+   page-break-inside: avoid;
+}
+
+.print-table-row:nth-child(even) {
+   background-color: #f8f9fa;
+}
+
+.print-table-cell {
+   display: table-cell;
+   border: 1px solid #000000;
+   padding: 2px;
+   text-align: center;
+   vertical-align: top;
+   font-size: 8px;
+   font-weight: bold;
+   line-height: 1.2;
+   height: 24px;
+   max-width: 60px;
+   word-wrap: break-word;
+   white-space: normal;
+}
+
+.print-table-header .print-table-cell {
+   background-color: #1e3c72;
+   color: #ffffff;
+   font-weight: bold;
+   font-size: 9px;
+   height: 32px;
+}
+
+.bio-red-cell {
+   color: #dc3545 !important;
+   font-weight: bold !important;
+}
+
+.bio-black-cell {
+   color: #000000 !important;
+   font-weight: bold !important;
+}
+
+.combination-verde-row {
+   background-color: #d4edda !important;
+}
+
+.combination-verde-row .print-table-cell {
+   background-color: #d4edda !important;
+}
+
+.combination-azzurro-row {
+   background-color: #d1ecf1 !important;
+}
+
+.combination-azzurro-row .print-table-cell {
+   background-color: #d1ecf1 !important;
+}
+
+.combination-viola-row {
+   background-color: #e2e3f3 !important;
+}
+
+.combination-viola-row .print-table-cell {
+   background-color: #e2e3f3 !important;
+}
+
+.transfer-target-row {
+   background-color: #fff3cd !important;
+}
+
+.transfer-target-row .print-table-cell {
+   background-color: #fff3cd !important;
+}
+
+.total-succo2-row {
+   background-color: #e8f4f8 !important;
+}
+
+.total-succo2-row .print-table-cell {
+   background-color: #e8f4f8 !important;
+   font-weight: bold !important;
+}
+
+.total-torchiato-row {
+   background-color: #fff8e1 !important;
+}
+
+.total-torchiato-row .print-table-cell {
+   background-color: #fff8e1 !important;
+   font-weight: bold !important;
+}
+
+.destinations-details {
+   font-size: 7px !important;
+   line-height: 1.1 !important;
+   font-weight: bold !important;
+}
+
 @media print {
    body { 
        margin: 8mm !important;
@@ -698,14 +805,8 @@ body {
        color: #000000 !important;
    }
    
-   .controls-section {
-       display: none !important;
-   }
-   
-   .combination-section {
-       display: none !important;
-   }
-   
+   .controls-section,
+   .combination-section,
    .btn {
        display: none !important;
    }
@@ -754,129 +855,13 @@ body {
        color: #000000 !important;
    }
    
-   .suppliers-container {
-       display: none !important;
-   }
-   
+   .suppliers-container,
    .summary-section {
        display: none !important;
    }
    
    .print-table {
        display: table !important;
-       width: 100% !important;
-       border-collapse: collapse !important;
-       margin-bottom: 10px !important;
-       font-size: 9px !important;
-   }
-   
-   .print-table-header {
-       display: table-header-group !important;
-       background-color: #1e3c72 !important;
-       color: #ffffff !important;
-       font-weight: bold !important;
-   }
-   
-   .print-table-body {
-       display: table-row-group !important;
-   }
-   
-   .print-table-row {
-       display: table-row !important;
-       page-break-inside: avoid !important;
-   }
-   
-   .print-table-row:nth-child(even) {
-       background-color: #f8f9fa !important;
-   }
-   
-   .print-table-cell {
-       display: table-cell !important;
-       border: 1px solid #000000 !important;
-       padding: 2px !important;
-       text-align: center !important;
-       vertical-align: top !important;
-       font-size: 8px !important;
-       font-weight: bold !important;
-       line-height: 1.2 !important;
-       height: 24px !important;
-       max-width: 60px !important;
-       word-wrap: break-word !important;
-       white-space: normal !important;
-   }
-   
-   .print-table-header .print-table-cell {
-       background-color: #1e3c72 !important;
-       color: #ffffff !important;
-       font-weight: bold !important;
-       font-size: 9px !important;
-       height: 32px !important;
-   }
-   
-   .bio-red-cell {
-       color: #dc3545 !important;
-       font-weight: bold !important;
-   }
-   
-   .bio-black-cell {
-       color: #000000 !important;
-       font-weight: bold !important;
-   }
-   
-   .combination-verde-row {
-       background-color: #d4edda !important;
-   }
-   
-   .combination-verde-row .print-table-cell {
-       background-color: #d4edda !important;
-   }
-   
-   .combination-azzurro-row {
-       background-color: #d1ecf1 !important;
-   }
-   
-   .combination-azzurro-row .print-table-cell {
-       background-color: #d1ecf1 !important;
-   }
-   
-   .combination-viola-row {
-       background-color: #e2e3f3 !important;
-   }
-   
-   .combination-viola-row .print-table-cell {
-       background-color: #e2e3f3 !important;
-   }
-   
-   .transfer-target-row {
-       background-color: #fff3cd !important;
-   }
-   
-   .transfer-target-row .print-table-cell {
-       background-color: #fff3cd !important;
-   }
-   
-   .total-succo2-row {
-       background-color: #e8f4f8 !important;
-   }
-   
-   .total-succo2-row .print-table-cell {
-       background-color: #e8f4f8 !important;
-       font-weight: bold !important;
-   }
-   
-   .total-torchiato-row {
-       background-color: #fff8e1 !important;
-   }
-   
-   .total-torchiato-row .print-table-cell {
-       background-color: #fff8e1 !important;
-       font-weight: bold !important;
-   }
-   
-   .destinations-details {
-       font-size: 7px !important;
-       line-height: 1.1 !important;
-       font-weight: bold !important;
    }
    
    @page {
@@ -1016,7 +1001,7 @@ body {
        <!-- I fornitori verranno aggiunti dinamicamente qui -->
    </div>
 
-   <!-- MODIFICATA: Tabella per stampa con colonne abbreviate -->
+   <!-- Tabella per stampa -->
    <div class="print-table" style="display: none;">
        <div class="print-table-header">
            <div class="print-table-row">
@@ -1063,9 +1048,9 @@ $(document).ready(function() {
        viola: { indexes: [], details: [] }
    };
 
-   // MODIFICATA: Variabili per gestione trasferimenti separati
+   // Variabili per gestione trasferimenti separati
    let transferData = {};
-   let transferCompositionData = {}; // Per tracciare i trasferimenti ricevuti
+   let transferCompositionData = {};
 
    // Definizione varietà per ogni tipo di agrume
    const varietyOptions = {
@@ -1093,9 +1078,9 @@ $(document).ready(function() {
            { value: 'ALTRO', text: 'Altro (specifica quale)' }
        ],
        'ARANCIA BIONDA': [
-           { value: 'MORO', text: 'Moro' },
-           { value: 'SANGUINELLA', text: 'Sanguinella' },
-           { value: 'TAROCCO', text: 'Tarocco' },
+           { value: 'NAVELINE', text: 'Naveline' },
+           { value: 'VALENCIA', text: 'Valencia' },
+           { value: 'BELLADONNA', text: 'Belladonna' },
            { value: 'VARIE', text: 'Varie' },
            { value: 'ALTRO', text: 'Altro (specifica quale)' }
        ],
@@ -1125,22 +1110,20 @@ $(document).ready(function() {
        'TORCHI FASO': 25.00
    };
 
-   // MODIFICATA: Generazione codice ID prodotto senza spazi
+   // Funzione per ottenere la quantità base (senza trasferimenti)
+   function getBaseQuantity(card) {
+       const index = card.data('supplier-index');
+       
+       if (transferCompositionData[index]) {
+           return transferCompositionData[index].baseAmount;
+       }
+       
+       return parseFloat(card.find('.quantita-prima').val()) || 0;
+   }
+       
+   // Generazione codice ID prodotto senza spazi
    function generateProductID(card) {
        let id = "";
-
-      // NUOVA: Funzione per ottenere la quantità base (senza trasferimenti)
-function getBaseQuantity(card) {
-    const index = card.data('supplier-index');
-    
-    // Se ha composizione trasferimenti, usa la quantità base memorizzata
-    if (transferCompositionData[index]) {
-        return transferCompositionData[index].baseAmount;
-    }
-    
-    // Altrimenti usa il valore del campo quantità prima
-    return parseFloat(card.find('.quantita-prima').val()) || 0;
-}
        
        // Tipo prodotto
        id += "SU";
@@ -1239,7 +1222,7 @@ function getBaseQuantity(card) {
        return id;
    }
 
-   // MODIFICATA: Generazione codice ID per totali senza spazi
+   // Generazione codice ID per totali senza spazi
    function generateTotalProductID(tipo, data) {
        let id = "";
        
@@ -1336,7 +1319,7 @@ function getBaseQuantity(card) {
        return id;
    }
 
-   // MODIFICATA: Generazione codice ID per destinazione specifica senza spazi
+   // Generazione codice ID per destinazione specifica senza spazi
    function generateDestinationID(card, dest) {
        const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
        if (charSection.length === 0) return '';
@@ -1438,11 +1421,6 @@ function getBaseQuantity(card) {
        return id;
    }
 
-   // Resto del codice JavaScript rimane identico...
-   // [Il resto del codice JavaScript continua esattamente come nell'originale]
-   // Per brevità non lo riporto tutto, ma dovrai includere tutte le altre funzioni
-   // che erano presenti nel codice originale
-
    // Funzione per determinare il colore della combinazione di un fornitore
    function getSupplierCombinationColor(supplierIndex) {
        for (const [color, data] of Object.entries(combinationData)) {
@@ -1515,7 +1493,7 @@ function getBaseQuantity(card) {
        return yieldsPerLine[linea] || 30;
    }
 
-   // MODIFICATA: Funzione per aggiornare il concentrato del fornitore
+   // Funzione per aggiornare il concentrato del fornitore
    window.updateSupplierConcentrato = function(index) {
        const card = $(`.supplier-card[data-supplier-index="${index}"]`);
        const quantitaPrima = parseFloat(card.find('.quantita-prima').val()) || 0;
@@ -1540,7 +1518,7 @@ function getBaseQuantity(card) {
        card.find('.product-id').val(productID);
    }
 
-   // MODIFICATA: Crea sezioni caratteristiche per ogni destinazione con disoleato
+   // Crea sezioni caratteristiche per ogni destinazione con disoleato
    function createDestinationCharacteristics(destinations, supplierIndex) {
        let html = '';
        
@@ -1642,249 +1620,143 @@ function getBaseQuantity(card) {
        return html;
    }
 
-   // MODIFICATA: Genera tabella per stampa con separazione tra quantità base e trasferimenti
-function generatePrintTable() {
-    const tbody = $('#print-table-body');
-    tbody.empty();
-    
-    // Aggiungi righe fornitori
-    $('.supplier-card').each(function() {
-        const card = $(this);
-        const index = card.data('supplier-index');
-        
-        const nome = card.find('.nome-fornitore').val();
-        const altroNome = card.find('.altro-fornitore').val();
-        const nomeFornitore = nome === 'ALTRO' ? altroNome : nome;
-        
-        const linea = card.find('.linea-trasformazione').val() || '';
-        const giacenza = card.find('.giacenza-fornitore').val() || '0';
-        const entrata = card.find('.entrata-fornitore').val() || '0';
-        const trasformata = card.find('.quantita-trasformata').val() || '0';
-        const rimanenza = card.find('.rimanenza-fornitore').val() || '0';
-        const cert = card.find('.certificazione-prodotto').val() || '';
-        const varieta = card.find('.varieta-prodotto').val() || '';
-        const portata = card.find('.portata-impianto').val() || '';
-        const inizio = card.find('.orario-inizio').val() || '';
-        const fine = card.find('.orario-fine-display').text().replace(/<[^>]*>/g, '') || '';
-        
-        // MODIFICATA: Usa sempre la quantità base per Q.SUCCO
-        const quantitaBase = getBaseQuantity(card);
-        let note = '';
-        
-        // Calcola concentrato per questo fornitore
-        const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
-        let concentratoFornitore = 0;
-        selectedDestinations.forEach(dest => {
-            const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
-            if (charSection.length > 0) {
-                const brix = charSection.find('.dest-brix').val();
-                const qtyDest = parseFloat(card.find(`.distribution-qty[data-dest="${dest}"]`).val()) || 0;
-                if (brix && brix !== 'NAT' && qtyDest > 0) {
-                    concentratoFornitore += parseFloat(calculateConcentrato(qtyDest, brix));
-                }
-            }
-        });
-        
-        // MODIFICATA: Gestisci trasferimenti ricevuti nelle note
-        if (transferCompositionData[index] && transferCompositionData[index].details.length > 0) {
-            const transfersTotal = transferCompositionData[index].total - transferCompositionData[index].baseAmount;
-            
-            if (transfersTotal > 0) {
-                const compositionDetails = transferCompositionData[index].details.map(detail => 
-                    `+${detail.amount}kg da F${detail.fromSupplier}(${detail.fromName})`
-                ).join('\n');
-                note = `TRASF.RIC.:\n${compositionDetails}\nTot.finale: ${transferCompositionData[index].total.toFixed(1)}kg`;
-            }
-        }
-        
-        // Raccogli destinazioni e quantità
-        let destinationsInfo = '';
-        let destinationIDs = '';
-        
-        selectedDestinations.forEach((dest, destIndex) => {
-            if (destIndex < 3) {
-                const qty = card.find(`.distribution-qty[data-dest="${dest}"]`).val() || '0';
-                
-                if (destIndex > 0) {
-                    destinationsInfo += '<br/>';
-                    destinationIDs += '<br/>';
-                }
-                
-                destinationsInfo += `<strong>${dest}:</strong>\n${qty}kg`;
-                const destID = generateDestinationID(card, dest);
-                destinationIDs += destID;
-            }
-        });
-        
-        if (!destinationsInfo && selectedDestinations.length > 0) {
-            destinationsInfo = selectedDestinations.join(', ');
-        }
-        
-        // Determina colore combinazione e tipo
-        let rowClass = '';
-        const combinationColor = getSupplierCombinationColor(index);
-        const transferStatus = getSupplierTransferStatus(index);
-        
-        if (combinationColor) {
-            rowClass = `combination-${combinationColor}-row`;
-            
-            const combinationTotal = calculateCombinationTotal(combinationColor);
-            if (combinationTotal > 0) {
-                const combinationNote = `COMB.${combinationColor.toUpperCase()}:\n${combinationTotal.toFixed(1)}kg totali`;
-                note = note ? `${note}\n${combinationNote}` : combinationNote;
-            }
-        } else if (transferStatus) {
-            rowClass = 'transfer-target-row';
-        }
-        
-        // Determina stile bio
-        const bioStatus = card.find('.dest-bio').first().val() || 'SI';
-        const certificazione = card.find('.certificazione-prodotto').val();
-        const isBioSpecific = ['BIO EU', 'BIO DEM', 'BIO NTD', 'BIO DEM/NTD'].includes(certificazione);
-        
-        let certClass = '';
-        let varietaClass = '';
-        if (isBioSpecific) {
-            if (bioStatus === 'SI') {
-                certClass = 'bio-red-cell';
-                varietaClass = 'bio-red-cell';
-            } else if (bioStatus === 'DECLASSATO' || bioStatus === 'NO') {
-                certClass = 'bio-black-cell';
-                varietaClass = 'bio-black-cell';
-            }
-        }
-        
-        const row = `
-            <div class="print-table-row ${rowClass}">
-                <div class="print-table-cell">${linea}</div>
-                <div class="print-table-cell">${nomeFornitore || ''}</div>
-                <div class="print-table-cell">${giacenza}</div>
-                <div class="print-table-cell">${entrata}</div>
-                <div class="print-table-cell">${trasformata}</div>
-                <div class="print-table-cell">${rimanenza}</div>
-                <div class="print-table-cell ${certClass}">${cert}</div>
-                <div class="print-table-cell ${varietaClass}">${varieta}</div>
-                <div class="print-table-cell">${portata}</div>
-                <div class="print-table-cell">${inizio}</div>
-                <div class="print-table-cell">${fine}</div>
-                <div class="print-table-cell">${quantitaBase.toFixed(1)}</div>
-                <div class="print-table-cell">${concentratoFornitore.toFixed(1)}</div>
-                <div class="print-table-cell destinations-details">${destinationsInfo}</div>
-                <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${destinationIDs}</div>
-                <div class="print-table-cell" style="font-size: 6px;">${note}</div>
-            </div>
-        `;
-        
-        tbody.append(row);
-    });
-    
-    // RESTO DEL CODICE per totali seconda e torchiato rimane identico
-    let totalSeconda = 0;
-    let totalTorchiato = 0;
-    let concentratoSeconda = 0;
-    let concentratoTorchiato = 0;
-    const defaultSeconda = 5;
-    const defaultTorchiato = 6;
-    
-    $('.supplier-card').each(function() {
-        const quantitaTrasformata = parseFloat($(this).find('.quantita-trasformata').val()) || 0;
-        const linea = $(this).find('.linea-trasformazione').val();
-        
-        if (quantitaTrasformata > 0) {
-            if (linea === 'BOE/1100') {
-                totalSeconda += (quantitaTrasformata * defaultSeconda / 100);
-            }
-            totalTorchiato += (quantitaTrasformata * defaultTorchiato / 100);
-        }
-    });
-    
-    // Calcola concentrati
-    const brixSeconda = $('#brix-seconda-totale').val() || 'NAT';
-    const brixTorchiato = $('#brix-torchiato-totale').val() || '45';
-    
-    if (brixSeconda !== 'NAT') {
-        concentratoSeconda = parseFloat(calculateConcentrato(totalSeconda, brixSeconda));
-    }
-    if (brixTorchiato !== 'NAT') {
-        concentratoTorchiato = parseFloat(calculateConcentrato(totalTorchiato, brixTorchiato));
-    }
-    
-    // Genera ID per totali
-    const secondaData = {
-        polpa: $('#polpa-seconda-totale').val() || '<1%',
-        brix: brixSeconda,
-        pastorizzato: $('#pastorizzato-seconda-totale').val() || 'SI',
-        disoleato: $('#disoleato-seconda-totale').val() || 'NO',
-        conservato: $('#conservato-seconda-totale').val() || 'SI',
-        destinazione: $('#destinazione-seconda-totale').val() || 'NAT IN TINI',
-        bio: 'SI'
-    };
-    
-    const torchiatoData = {
-        polpa: $('#polpa-torchiato-totale').val() || '<1%',
-        brix: brixTorchiato,
-        pastorizzato: $('#pastorizzato-torchiato-totale').val() || 'SI',
-        disoleato: $('#disoleato-torchiato-totale').val() || 'NO',
-        conservato: $('#conservato-torchiato-totale').val() || 'NO',
-        destinazione: $('#destinazione-torchiato-totale').val() || 'CONCENTRATO',
-        bio: 'SI'
-    };
-    
-    const idSeconda = generateTotalProductID('SECONDA', secondaData);
-    const idTorchiato = generateTotalProductID('TORCHIATO', torchiatoData);
-    
-    // Aggiungi riga Totale Succo 2ª
-    if (totalSeconda > 0) {
-        const rowSeconda = `
-            <div class="print-table-row total-succo2-row">
-                <div class="print-table-cell">BOE/1100</div>
-                <div class="print-table-cell">TOTALE SUCCO 2ª</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">${totalSeconda.toFixed(1)}</div>
-                <div class="print-table-cell">${concentratoSeconda.toFixed(1)}</div>
-                <div class="print-table-cell">${secondaData.destinazione}<br/>Polpa: ${secondaData.polpa}<br/>°BX: ${secondaData.brix}</div>
-                <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${idSeconda}</div>
-                <div class="print-table-cell">TOTALE SUCCO 2ª<br/>LINEA BOE/1100</div>
-            </div>
-        `;
-        tbody.append(rowSeconda);
-    }
-    
-    // Aggiungi riga Totale Torchiato
-    if (totalTorchiato > 0) {
-        const rowTorchiato = `
-            <div class="print-table-row total-torchiato-row">
-                <div class="print-table-cell">TORCHI FASO</div>
-                <div class="print-table-cell">TOTALE TORCHIATO</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">-</div>
-                <div class="print-table-cell">${totalTorchiato.toFixed(1)}</div>
-                <div class="print-table-cell">${concentratoTorchiato.toFixed(1)}</div>
-                <div class="print-table-cell">${torchiatoData.destinazione}<br/>Polpa: ${torchiatoData.polpa}<br/>°BX: ${torchiatoData.brix}</div>
-                <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${idTorchiato}</div>
-                <div class="print-table-cell">TOTALE TORCHIATO<br/>TUTTE LE LINEE</div>
-            </div>
-        `;
-        tbody.append(rowTorchiato);
-    }
-}
+   // Genera tabella per stampa con separazione tra quantità base e trasferimenti
+   function generatePrintTable() {
+       const tbody = $('#print-table-body');
+       tbody.empty();
        
-       // NUOVO: Aggiungi righe totali Succo 2ª e Torchiato
+       // Aggiungi righe fornitori
+       $('.supplier-card').each(function() {
+           const card = $(this);
+           const index = card.data('supplier-index');
+           
+           const nome = card.find('.nome-fornitore').val();
+           const altroNome = card.find('.altro-fornitore').val();
+           const nomeFornitore = nome === 'ALTRO' ? altroNome : nome;
+           
+           const linea = card.find('.linea-trasformazione').val() || '';
+           const giacenza = card.find('.giacenza-fornitore').val() || '0';
+           const entrata = card.find('.entrata-fornitore').val() || '0';
+           const trasformata = card.find('.quantita-trasformata').val() || '0';
+           const rimanenza = card.find('.rimanenza-fornitore').val() || '0';
+           const cert = card.find('.certificazione-prodotto').val() || '';
+           const varieta = card.find('.varieta-prodotto').val() || '';
+           const portata = card.find('.portata-impianto').val() || '';
+           const inizio = card.find('.orario-inizio').val() || '';
+           const fine = card.find('.orario-fine-display').text().replace(/<[^>]*>/g, '') || '';
+           
+           // Usa sempre la quantità base per Q.SUCCO
+           const quantitaBase = getBaseQuantity(card);
+           let note = '';
+           
+           // Calcola concentrato per questo fornitore
+           const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
+           let concentratoFornitore = 0;
+           selectedDestinations.forEach(dest => {
+               const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
+               if (charSection.length > 0) {
+                   const brix = charSection.find('.dest-brix').val();
+                   const qtyDest = parseFloat(card.find(`.distribution-qty[data-dest="${dest}"]`).val()) || 0;
+                   if (brix && brix !== 'NAT' && qtyDest > 0) {
+                       concentratoFornitore += parseFloat(calculateConcentrato(qtyDest, brix));
+                   }
+               }
+           });
+           
+           // Gestisci trasferimenti ricevuti nelle note
+           if (transferCompositionData[index] && transferCompositionData[index].details.length > 0) {
+               const transfersTotal = transferCompositionData[index].total - transferCompositionData[index].baseAmount;
+               
+               if (transfersTotal > 0) {
+                   const compositionDetails = transferCompositionData[index].details.map(detail => 
+                       `+${detail.amount}kg da F${detail.fromSupplier}(${detail.fromName})`
+                   ).join('\n');
+                   note = `TRASF.RIC.:\n${compositionDetails}\nTot.finale: ${transferCompositionData[index].total.toFixed(1)}kg`;
+               }
+           }
+           
+           // Raccogli destinazioni e quantità
+           let destinationsInfo = '';
+           let destinationIDs = '';
+           
+           selectedDestinations.forEach((dest, destIndex) => {
+               if (destIndex < 3) {
+                   const qty = card.find(`.distribution-qty[data-dest="${dest}"]`).val() || '0';
+                   
+                   if (destIndex > 0) {
+                       destinationsInfo += '<br/>';
+                       destinationIDs += '<br/>';
+                   }
+                   
+                   destinationsInfo += `<strong>${dest}:</strong>\n${qty}kg`;
+                   const destID = generateDestinationID(card, dest);
+                   destinationIDs += destID;
+               }
+           });
+           
+           if (!destinationsInfo && selectedDestinations.length > 0) {
+               destinationsInfo = selectedDestinations.join(', ');
+           }
+           
+           // Determina colore combinazione e tipo
+           let rowClass = '';
+           const combinationColor = getSupplierCombinationColor(index);
+           const transferStatus = getSupplierTransferStatus(index);
+           
+           if (combinationColor) {
+               rowClass = `combination-${combinationColor}-row`;
+               
+               const combinationTotal = calculateCombinationTotal(combinationColor);
+               if (combinationTotal > 0) {
+                   const combinationNote = `COMB.${combinationColor.toUpperCase()}:\n${combinationTotal.toFixed(1)}kg totali`;
+                   note = note ? `${note}\n${combinationNote}` : combinationNote;
+               }
+           } else if (transferStatus) {
+               rowClass = 'transfer-target-row';
+           }
+           
+           // Determina stile bio
+           const bioStatus = card.find('.dest-bio').first().val() || 'SI';
+           const certificazione = card.find('.certificazione-prodotto').val();
+           const isBioSpecific = ['BIO EU', 'BIO DEM', 'BIO NTD', 'BIO DEM/NTD'].includes(certificazione);
+           
+           let certClass = '';
+           let varietaClass = '';
+           if (isBioSpecific) {
+               if (bioStatus === 'SI') {
+                   certClass = 'bio-red-cell';
+                   varietaClass = 'bio-red-cell';
+               } else if (bioStatus === 'DECLASSATO' || bioStatus === 'NO') {
+                   certClass = 'bio-black-cell';
+                   varietaClass = 'bio-black-cell';
+               }
+           }
+           
+           const row = `
+               <div class="print-table-row ${rowClass}">
+                   <div class="print-table-cell">${linea}</div>
+                   <div class="print-table-cell">${nomeFornitore || ''}</div>
+                   <div class="print-table-cell">${giacenza}</div>
+                   <div class="print-table-cell">${entrata}</div>
+                   <div class="print-table-cell">${trasformata}</div>
+                   <div class="print-table-cell">${rimanenza}</div>
+                   <div class="print-table-cell ${certClass}">${cert}</div>
+                   <div class="print-table-cell ${varietaClass}">${varieta}</div>
+                   <div class="print-table-cell">${portata}</div>
+                   <div class="print-table-cell">${inizio}</div>
+                   <div class="print-table-cell">${fine}</div>
+                   <div class="print-table-cell">${quantitaBase.toFixed(1)}</div>
+                   <div class="print-table-cell">${concentratoFornitore.toFixed(1)}</div>
+                   <div class="print-table-cell destinations-details">${destinationsInfo}</div>
+                   <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${destinationIDs}</div>
+                   <div class="print-table-cell" style="font-size: 6px;">${note}</div>
+               </div>
+           `;
+           
+           tbody.append(row);
+       });
+       
+       // Aggiungi righe totali Succo 2ª e Torchiato
        let totalSeconda = 0;
        let totalTorchiato = 0;
        let concentratoSeconda = 0;
@@ -2006,7 +1878,7 @@ function generatePrintTable() {
        }
    };
 
-   // MODIFICATO: Crea card fornitore con sezione trasferimenti separata
+   // Crea card fornitore con sezione trasferimenti separata
    function createSupplierCard(index) {
        const agrume = $('#tipo-agrume-giornaliero').val();
        const defaultYield = 30;
@@ -2153,7 +2025,7 @@ function generatePrintTable() {
                    </div>
                </div>
 
-               <!-- MODIFICATA: Quantità Succo 1ª con sezione trasferimenti separata -->
+               <!-- Quantità Succo 1ª con sezione trasferimenti separata -->
                <div class="form-row">
                    <span class="form-label">Succo 1ª (kg):</span>
                    <div class="form-input">
@@ -2162,7 +2034,7 @@ function generatePrintTable() {
                    </div>
                </div>
 
-               <!-- NUOVA: Sezione trasferimenti ricevuti -->
+               <!-- Sezione trasferimenti ricevuti -->
                <div class="transfers-section hidden-field">
                    <div class="transfers-title">Trasferimenti Ricevuti</div>
                    <div class="transfers-list"></div>
@@ -2263,7 +2135,7 @@ function generatePrintTable() {
        updateAllTransferOptions();
    };
 
-   // MODIFICATA: Funzione di calcolo con mantenimento quantità base
+   // Funzione di calcolo con mantenimento quantità base
    window.calculateSupplier = function(index) {
        const card = $(`.supplier-card[data-supplier-index="${index}"]`);
        
@@ -2303,7 +2175,7 @@ function generatePrintTable() {
        updateSupplierConcentrato(index);
    };
 
-   // NUOVA: Funzione per aggiornare la visualizzazione dei trasferimenti
+   // Funzione per aggiornare la visualizzazione dei trasferimenti
    function updateTransfersDisplay(index) {
        const card = $(`.supplier-card[data-supplier-index="${index}"]`);
        const transfersSection = card.find('.transfers-section');
@@ -2349,8 +2221,7 @@ function generatePrintTable() {
            const dataFine = new Date(dataInizio.getTime() + durataTotaleMinuti * 60 * 1000);
            
            const minutiFine = dataFine.getMinutes();
-           const minutiArrotondati = Math.ceil(minutiFine / 15)
-          * 15;
+           const minutiArrotondati = Math.ceil(minutiFine / 15) * 15;
            if (minutiArrotondati === 60) {
                dataFine.setHours(dataFine.getHours() + 1, 0, 0, 0);
            } else {
@@ -2447,7 +2318,7 @@ function generatePrintTable() {
        }
    };
 
-   // MODIFICATA: Sezione distribuzione con caratteristiche per destinazione con disoleato
+   // Sezione distribuzione con caratteristiche per destinazione
    window.updateDistributionSection = function(index) {
        const card = $(`.supplier-card[data-supplier-index="${index}"]`);
        const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
@@ -2501,7 +2372,7 @@ function generatePrintTable() {
        }
    };
 
-   // MODIFICATA: Aggiorna totale distribuzione usando totale con trasferimenti
+   // Aggiorna totale distribuzione usando totale con trasferimenti
    window.updateDistributionTotal = function(index) {
        const card = $(`.supplier-card[data-supplier-index="${index}"]`);
        let distributedTotal = 0;
@@ -2511,7 +2382,7 @@ function generatePrintTable() {
            distributedTotal += value;
        });
        
-       // MODIFICATA: Usa totale con trasferimenti per calcolare rimanente
+       // Usa totale con trasferimenti per calcolare rimanente
        let totalQuantity = parseFloat(card.find('.quantita-prima').val()) || 0;
        if (transferCompositionData[index]) {
            totalQuantity = transferCompositionData[index].total;
@@ -2566,7 +2437,7 @@ function generatePrintTable() {
        });
    }
 
-   // MODIFICATA: Esegui trasferimento mantenendo quantità base separata
+   // Esegui trasferimento mantenendo quantità base separata
    window.executeTransfer = function(sourceIndex) {
        const sourceCard = $(`.supplier-card[data-supplier-index="${sourceIndex}"]`);
        const targetIndex = sourceCard.find('.transfer-destination').val();
@@ -2601,7 +2472,7 @@ function generatePrintTable() {
            return;
        }
        
-       // MODIFICATA: Mantieni quantità base separata, aggiungi trasferimento
+       // Mantieni quantità base separata, aggiungi trasferimento
        const targetQuantitaPrimaField = targetCard.find('.quantita-prima');
        const baseAmount = parseFloat(targetQuantitaPrimaField.val()) || 0;
        
@@ -2859,7 +2730,7 @@ function generatePrintTable() {
        }
    }
 
-   // MODIFICATA: Sezione riepilogo compatta per stampa
+   // Sezione riepilogo compatta per stampa
    function updateSummarySection() {
        let totalSeconda = 0;
        let totalTorchiato = 0;
@@ -3198,7 +3069,7 @@ function generatePrintTable() {
        });
    }
 
-   // MODIFICATA: Funzioni di salvataggio e caricamento con disoleato
+   // Funzioni di salvataggio e caricamento con disoleato
    function collectProgramData() {
        const data = {
            tipoAgrume: $('#tipo-agrume-giornaliero').val(),
@@ -3402,7 +3273,7 @@ function generatePrintTable() {
        $(this).val('');
    });
 
-   // MODIFICATA: Caricamento dati con disoleato
+   // Caricamento dati con disoleato
    function loadDataFromObject(data) {
        $('#tipo-agrume-giornaliero').val(data.tipoAgrume || '');
        $('#data-lavorazione').val(data.dataLavorazione || '');
