@@ -9,8 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdn
-   .jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <style>
@@ -689,7 +688,7 @@ body {
    resize: vertical;
 }
 
-/* MODIFICATA: Stampa con tabella migliorata e testo su due righe */
+/* MODIFICATA: Stampa con tabella migliorata, testo in grassetto e carattere aumentato */
 @media print {
    body { 
        margin: 8mm !important;
@@ -768,7 +767,7 @@ body {
        width: 100% !important;
        border-collapse: collapse !important;
        margin-bottom: 10px !important;
-       font-size: 7px !important;
+       font-size: 9px !important;
    }
    
    .print-table-header {
@@ -797,8 +796,8 @@ body {
        padding: 2px !important;
        text-align: center !important;
        vertical-align: top !important;
-       font-size: 6px !important;
-       /* NUOVO: Testo su due righe */
+       font-size: 8px !important;
+       font-weight: bold !important;
        line-height: 1.2 !important;
        height: 24px !important;
        max-width: 60px !important;
@@ -810,7 +809,7 @@ body {
        background-color: #1e3c72 !important;
        color: #ffffff !important;
        font-weight: bold !important;
-       font-size: 7px !important;
+       font-size: 9px !important;
        height: 32px !important;
    }
    
@@ -875,8 +874,9 @@ body {
    }
    
    .destinations-details {
-       font-size: 5px !important;
+       font-size: 7px !important;
        line-height: 1.1 !important;
+       font-weight: bold !important;
    }
    
    @page {
@@ -1016,25 +1016,25 @@ body {
        <!-- I fornitori verranno aggiunti dinamicamente qui -->
    </div>
 
-   <!-- MODIFICATA: Tabella per stampa con colonna concentrato e righe totali -->
+   <!-- MODIFICATA: Tabella per stampa con colonne abbreviate -->
    <div class="print-table" style="display: none;">
        <div class="print-table-header">
            <div class="print-table-row">
                <div class="print-table-cell">LINEA</div>
-               <div class="print-table-cell">FORNITORE</div>
-               <div class="print-table-cell">GIACENZA<br/>kg</div>
-               <div class="print-table-cell">ENTRATA<br/>kg</div>
-               <div class="print-table-cell">TRASFORMATA<br/>kg</div>
-               <div class="print-table-cell">RIMANENZA<br/>kg</div>
+               <div class="print-table-cell">FORN.</div>
+               <div class="print-table-cell">GIAC.<br/>kg</div>
+               <div class="print-table-cell">ENTR.<br/>kg</div>
+               <div class="print-table-cell">TRASF.<br/>kg</div>
+               <div class="print-table-cell">RIMAN.<br/>kg</div>
                <div class="print-table-cell">CERT.</div>
                <div class="print-table-cell">VARIETA'</div>
                <div class="print-table-cell">PORTATA<br/>kg/h</div>
                <div class="print-table-cell">INIZIO</div>
                <div class="print-table-cell">FINE</div>
-               <div class="print-table-cell">Q. SUCCO 1^<br/>kg</div>
-               <div class="print-table-cell">CONCENTRATO<br/>kg</div>
-               <div class="print-table-cell">DESTINAZIONI</div>
-               <div class="print-table-cell">ID<br/>DESTINAZIONI</div>
+               <div class="print-table-cell">Q.SUCCO<br/>kg</div>
+               <div class="print-table-cell">CONC.<br/>kg</div>
+               <div class="print-table-cell">DEST.</div>
+               <div class="print-table-cell">ID DEST.</div>
                <div class="print-table-cell">NOTE</div>
            </div>
        </div>
@@ -1125,12 +1125,12 @@ $(document).ready(function() {
        'TORCHI FASO': 25.00
    };
 
-   // MODIFICATA: Generazione codice ID prodotto con campo disoleato
+   // MODIFICATA: Generazione codice ID prodotto senza spazi
    function generateProductID(card) {
        let id = "";
        
        // Tipo prodotto
-       id += "SU ";
+       id += "SU";
        
        // Tipo agrume
        const agrume = $('#tipo-agrume-giornaliero').val();
@@ -1138,47 +1138,47 @@ $(document).ready(function() {
        
        switch(agrume) {
            case 'LIMONE':
-               id += "LE ";
+               id += "LE";
                break;
            case 'ARANCIA ROSSA':
-               id += "AR ";
+               id += "AR";
                break;
            case 'ARANCIA BIONDA':
-               id += "AB ";
+               id += "AB";
                break;
            case 'MANDARINO':
-               id += "MA ";
+               id += "MA";
                break;
            case 'BERGAMOTTO':
-               id += "BE ";
+               id += "BE";
                break;
            case 'POMPELMO':
-               id += "PO ";
+               id += "PO";
                break;
            default:
-               id += "XX ";
+               id += "XX";
        }
        
        // Brix
        const brix = card.find('.brix-prima').val();
        if (brix === 'NAT') {
-           id += "00 ";
+           id += "00";
        } else if (brix === 'ALTRO') {
            const altroBrix = card.find('.altro-brix-prima').val();
-           id += (altroBrix || "XX") + " ";
+           id += (altroBrix || "XX");
        } else {
-           id += brix + " ";
+           id += brix;
        }
        
        // Tenore polpa
        const polpa = card.find('.tenore-polpa-prima').val();
        if (polpa === 'STANDARD') {
-           id += "UF ";
+           id += "UF";
        } else if (polpa === 'ALTRO') {
            const altroPolpa = card.find('.altro-tenore-prima').val();
-           id += (altroPolpa || "XX") + " ";
+           id += (altroPolpa || "XX");
        } else {
-           id += polpa + " ";
+           id += polpa;
        }
        
        // Pastorizzazione/Concentrazione
@@ -1187,27 +1187,25 @@ $(document).ready(function() {
        const isConcentrato = destinazioni.some(dest => dest === 'CONCENTRATO');
        
        if (isConcentrato) {
-           id += "CP ";
+           id += "CP";
        } else if (pastorizzato === 'SI') {
-           id += "PP ";
+           id += "PP";
        } else {
-           id += "NA ";
+           id += "NA";
        }
        
        // Conservazione
        const conservato = card.find('.conservato-prima').val();
        if (conservato === 'SI') {
-           id += "C ";
+           id += "C";
        } else {
-           id += "N ";
+           id += "N";
        }
        
-       // NUOVO: Disoleato
+       // Disoleato
        const disoleato = card.find('.disoleato-prima').val();
        if (disoleato === 'SI') {
-           id += "D ";
-       } else {
-           id += "";
+           id += "D";
        }
        
        // Certificazione - considera bio status
@@ -1215,28 +1213,28 @@ $(document).ready(function() {
        const bioStatus = card.find('.bio-prima').val();
        
        if (bioStatus === 'NO' || bioStatus === 'DECLASSATO') {
-           id += "";
+           // Non aggiunge nulla
        } else if (cert === 'CONVENZIONALE') {
-           id += "";
+           // Non aggiunge nulla
        } else if (cert === 'ALTRO') {
            const altraCert = card.find('.altra-certificazione').val();
-           id += " " + (altraCert || "XX").toUpperCase().replace(/\s+/g, '').replace(/\//g, '');
+           id += (altraCert || "XX").toUpperCase().replace(/\s+/g, '').replace(/\//g, '');
        } else if (cert) {
-           id += " " + cert.replace(/\s+/g, '').replace(/\//g, '');
+           id += cert.replace(/\s+/g, '').replace(/\//g, '');
        }
        
-       return id.trim();
+       return id;
    }
 
-   // NUOVA: Generazione codice ID per totali (seconda e torchiato)
+   // MODIFICATA: Generazione codice ID per totali senza spazi
    function generateTotalProductID(tipo, data) {
        let id = "";
        
        // Tipo prodotto
        if (tipo === 'SECONDA') {
-           id += "SU ";
+           id += "SU";
        } else if (tipo === 'TORCHIATO') {
-           id += "SU ";
+           id += "SU";
        }
        
        // Tipo agrume
@@ -1244,41 +1242,41 @@ $(document).ready(function() {
        
        switch(agrume) {
            case 'LIMONE':
-               id += "LE ";
+               id += "LE";
                break;
            case 'ARANCIA ROSSA':
-               id += "AR ";
+               id += "AR";
                break;
            case 'ARANCIA BIONDA':
-               id += "AB ";
+               id += "AB";
                break;
            case 'MANDARINO':
-               id += "MA ";
+               id += "MA";
                break;
            case 'BERGAMOTTO':
-               id += "BE ";
+               id += "BE";
                break;
            case 'POMPELMO':
-               id += "PO ";
+               id += "PO";
                break;
            default:
-               id += "XX ";
+               id += "XX";
        }
        
        // Brix
        const brix = data.brix;
        if (brix === 'NAT') {
-           id += "00 ";
+           id += "00";
        } else {
-           id += brix + " ";
+           id += brix;
        }
        
        // Tenore polpa
        const polpa = data.polpa;
        if (polpa === 'STANDARD') {
-           id += "UF ";
+           id += "UF";
        } else {
-           id += polpa + " ";
+           id += polpa;
        }
        
        // Pastorizzazione/Concentrazione
@@ -1286,27 +1284,25 @@ $(document).ready(function() {
        const isConcentrato = data.destinazione === 'CONCENTRATO';
        
        if (isConcentrato) {
-           id += "CP ";
+           id += "CP";
        } else if (pastorizzato === 'SI') {
-           id += "PP ";
+           id += "PP";
        } else {
-           id += "NA ";
+           id += "NA";
        }
        
        // Conservazione
        const conservato = data.conservato;
        if (conservato === 'SI') {
-           id += "C ";
+           id += "C";
        } else {
-           id += "N ";
+           id += "N";
        }
        
        // Disoleato
        const disoleato = data.disoleato;
        if (disoleato === 'SI') {
-           id += "D ";
-       } else {
-           id += "";
+           id += "D";
        }
        
        // Certificazione dalla prima carta fornitore disponibile
@@ -1316,18 +1312,18 @@ $(document).ready(function() {
            const bioStatus = data.bio || 'SI';
            
            if (bioStatus === 'NO' || bioStatus === 'DECLASSATO') {
-               id += "";
+               // Non aggiunge nulla
            } else if (cert === 'CONVENZIONALE') {
-               id += "";
+               // Non aggiunge nulla
            } else if (cert) {
-               id += " " + cert.replace(/\s+/g, '').replace(/\//g, '');
+               id += cert.replace(/\s+/g, '').replace(/\//g, '');
            }
        }
        
-       return id.trim();
+       return id;
    }
 
-   // MODIFICATA: Generazione codice ID per destinazione specifica con disoleato
+   // MODIFICATA: Generazione codice ID per destinazione specifica senza spazi
    function generateDestinationID(card, dest) {
        const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
        if (charSection.length === 0) return '';
@@ -1335,54 +1331,54 @@ $(document).ready(function() {
        let id = "";
        
        // Tipo prodotto
-       id += "SU ";
+       id += "SU";
        
        // Tipo agrume
        const agrume = $('#tipo-agrume-giornaliero').val();
        
        switch(agrume) {
            case 'LIMONE':
-               id += "LE ";
+               id += "LE";
                break;
            case 'ARANCIA ROSSA':
-               id += "AR ";
+               id += "AR";
                break;
            case 'ARANCIA BIONDA':
-               id += "AB ";
+               id += "AB";
                break;
            case 'MANDARINO':
-               id += "MA ";
+               id += "MA";
                break;
            case 'BERGAMOTTO':
-               id += "BE ";
+               id += "BE";
                break;
            case 'POMPELMO':
-               id += "PO ";
+               id += "PO";
                break;
            default:
-               id += "XX ";
+               id += "XX";
        }
        
        // Brix della destinazione
        const brix = charSection.find('.dest-brix').val();
        if (brix === 'NAT') {
-           id += "00 ";
+           id += "00";
        } else if (brix === 'ALTRO') {
            const altroBrix = charSection.find('.dest-brix-altro').val();
-           id += (altroBrix || "XX") + " ";
+           id += (altroBrix || "XX");
        } else {
-           id += brix + " ";
+           id += brix;
        }
        
        // Tenore polpa della destinazione
        const polpa = charSection.find('.dest-polpa').val();
        if (polpa === 'STANDARD') {
-           id += "UF ";
+           id += "UF";
        } else if (polpa === 'ALTRO') {
            const altroPolpa = charSection.find('.dest-polpa-altro').val();
-           id += (altroPolpa || "XX") + " ";
+           id += (altroPolpa || "XX");
        } else {
-           id += polpa + " ";
+           id += polpa;
        }
        
        // Pastorizzazione/Concentrazione della destinazione
@@ -1390,27 +1386,25 @@ $(document).ready(function() {
        const isConcentrato = dest === 'CONCENTRATO';
        
        if (isConcentrato) {
-           id += "CP ";
+           id += "CP";
        } else if (pastorizzato === 'SI') {
-           id += "PP ";
+           id += "PP";
        } else {
-           id += "NA ";
+           id += "NA";
        }
        
        // Conservazione della destinazione
        const conservato = charSection.find('.dest-conservato').val();
        if (conservato === 'SI') {
-           id += "C ";
+           id += "C";
        } else {
-           id += "N ";
+           id += "N";
        }
        
-       // NUOVO: Disoleato della destinazione
+       // Disoleato della destinazione
        const disoleato = charSection.find('.dest-disoleato').val();
        if (disoleato === 'SI') {
-           id += "D ";
-       } else {
-           id += "";
+           id += "D";
        }
        
        // Certificazione
@@ -1418,18 +1412,23 @@ $(document).ready(function() {
        const bioStatus = charSection.find('.dest-bio').val();
        
        if (bioStatus === 'NO' || bioStatus === 'DECLASSATO') {
-           id += "";
+           // Non aggiunge nulla
        } else if (cert === 'CONVENZIONALE') {
-           id += "";
+           // Non aggiunge nulla
        } else if (cert === 'ALTRO') {
            const altraCert = card.find('.altra-certificazione').val();
-           id += " " + (altraCert || "XX").toUpperCase().replace(/\s+/g, '').replace(/\//g, '');
+           id += (altraCert || "XX").toUpperCase().replace(/\s+/g, '').replace(/\//g, '');
        } else if (cert) {
-           id += " " + cert.replace(/\s+/g, '').replace(/\//g, '');
+           id += cert.replace(/\s+/g, '').replace(/\//g, '');
        }
        
-       return id.trim();
+       return id;
    }
+
+   // Resto del codice JavaScript rimane identico...
+   // [Il resto del codice JavaScript continua esattamente come nell'originale]
+   // Per brevità non lo riporto tutto, ma dovrai includere tutte le altre funzioni
+   // che erano presenti nel codice originale
 
    // Funzione per determinare il colore della combinazione di un fornitore
    function getSupplierCombinationColor(supplierIndex) {
