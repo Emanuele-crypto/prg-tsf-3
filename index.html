@@ -678,13 +678,13 @@ body {
    resize: vertical;
 }
 
-/* Tabella per stampa */
+/* Tabella per stampa - CARATTERI PIÙ GRANDI */
 .print-table {
    display: none;
    width: 100%;
    border-collapse: collapse;
    margin-bottom: 10px;
-   font-size: 9px;
+   font-size: 12px; /* AUMENTATO DA 9px A 12px */
 }
 
 .print-table-header {
@@ -710,14 +710,14 @@ body {
 .print-table-cell {
    display: table-cell;
    border: 1px solid #000000;
-   padding: 2px;
+   padding: 3px; /* AUMENTATO DA 2px A 3px */
    text-align: center;
    vertical-align: top;
-   font-size: 8px;
+   font-size: 11px; /* AUMENTATO DA 8px A 11px */
    font-weight: bold;
-   line-height: 1.2;
-   height: 24px;
-   max-width: 60px;
+   line-height: 1.3; /* AUMENTATO DA 1.2 A 1.3 */
+   height: 28px; /* AUMENTATO DA 24px A 28px */
+   max-width: 70px; /* AUMENTATO DA 60px A 70px */
    word-wrap: break-word;
    white-space: normal;
 }
@@ -726,8 +726,15 @@ body {
    background-color: #1e3c72;
    color: #ffffff;
    font-weight: bold;
-   font-size: 9px;
-   height: 32px;
+   font-size: 12px; /* AUMENTATO DA 9px A 12px */
+   height: 36px; /* AUMENTATO DA 32px A 36px */
+}
+
+/* Stili specifici per ID DESTINAZIONE - CARATTERI PIÙ GRANDI */
+.print-table-cell:nth-child(15) {
+   font-family: 'Courier New', monospace; 
+   font-size: 10px !important; /* AUMENTATO DA 6px A 10px */
+   font-weight: bold !important;
 }
 
 .bio-red-cell {
@@ -791,8 +798,8 @@ body {
 }
 
 .destinations-details {
-   font-size: 7px !important;
-   line-height: 1.1 !important;
+   font-size: 9px !important; /* AUMENTATO DA 7px A 9px */
+   line-height: 1.2 !important;
    font-weight: bold !important;
 }
 
@@ -800,8 +807,8 @@ body {
    body { 
        margin: 8mm !important;
        background-color: white !important;
-       font-size: 10px !important;
-       line-height: 1.1 !important;
+       font-size: 12px !important; /* AUMENTATO DA 10px A 12px */
+       line-height: 1.2 !important;
        color: #000000 !important;
    }
    
@@ -820,20 +827,20 @@ body {
    }
    
    .header h1 {
-       font-size: 18px !important;
+       font-size: 20px !important; /* AUMENTATO DA 18px A 20px */
        color: #ffffff !important;
        font-weight: bold !important;
        margin-bottom: 4px !important;
    }
    
    .header .subtitle {
-       font-size: 14px !important;
+       font-size: 16px !important; /* AUMENTATO DA 14px A 16px */
        color: #ffffff !important;
        margin-bottom: 4px !important;
    }
    
    .header-info {
-       font-size: 14px !important;
+       font-size: 16px !important; /* AUMENTATO DA 14px A 16px */
        color: #ffffff !important;
    }
    
@@ -845,13 +852,13 @@ body {
    }
    
    .total-value {
-       font-size: 14px !important;
+       font-size: 16px !important; /* AUMENTATO DA 14px A 16px */
        color: #000000 !important;
        font-weight: bold !important;
    }
    
    .total-label {
-       font-size: 10px !important;
+       font-size: 12px !important; /* AUMENTATO DA 10px A 12px */
        color: #000000 !important;
    }
    
@@ -1019,7 +1026,7 @@ body {
                <div class="print-table-cell">Q.SUCCO<br/>kg</div>
                <div class="print-table-cell">CONC.<br/>kg</div>
                <div class="print-table-cell">DEST.</div>
-               <div class="print-table-cell">ID DEST.</div>
+               <div class="print-table-cell">ID DESTINAZIONE</div>
                <div class="print-table-cell">NOTE</div>
            </div>
        </div>
@@ -1121,7 +1128,7 @@ $(document).ready(function() {
        return parseFloat(card.find('.quantita-prima').val()) || 0;
    }
        
-   // Generazione codice ID prodotto senza spazi
+   // Generazione codice ID prodotto senza spazi - MODIFICATA PER DISOLEATO + PASTORIZZATO
    function generateProductID(card) {
        let id = "";
        
@@ -1177,13 +1184,16 @@ $(document).ready(function() {
            id += polpa;
        }
        
-       // Pastorizzazione/Concentrazione
+       // Pastorizzazione/Concentrazione/Disoleato - LOGICA MODIFICATA
        const pastorizzato = card.find('.pastorizzato-prima').val();
+       const disoleato = card.find('.disoleato-prima').val();
        const destinazioni = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
        const isConcentrato = destinazioni.some(dest => dest === 'CONCENTRATO');
        
        if (isConcentrato) {
            id += "CP";
+       } else if (pastorizzato === 'SI' && disoleato === 'SI') {
+           id += "DP"; // NUOVA CONDIZIONE: Disoleato + Pastorizzato = DP
        } else if (pastorizzato === 'SI') {
            id += "PP";
        } else {
@@ -1198,9 +1208,8 @@ $(document).ready(function() {
            id += "N";
        }
        
-       // Disoleato
-       const disoleato = card.find('.disoleato-prima').val();
-       if (disoleato === 'SI') {
+       // Disoleato (solo se non già incluso nella logica precedente)
+       if (!(pastorizzato === 'SI' && disoleato === 'SI') && disoleato === 'SI') {
            id += "D";
        }
        
@@ -1222,7 +1231,7 @@ $(document).ready(function() {
        return id;
    }
 
-   // Generazione codice ID per totali senza spazi
+   // Generazione codice ID per totali senza spazi - MODIFICATA PER DISOLEATO + PASTORIZZATO
    function generateTotalProductID(tipo, data) {
        let id = "";
        
@@ -1275,12 +1284,15 @@ $(document).ready(function() {
            id += polpa;
        }
        
-       // Pastorizzazione/Concentrazione
+       // Pastorizzazione/Concentrazione/Disoleato - LOGICA MODIFICATA
        const pastorizzato = data.pastorizzato;
+       const disoleato = data.disoleato;
        const isConcentrato = data.destinazione === 'CONCENTRATO';
        
        if (isConcentrato) {
            id += "CP";
+       } else if (pastorizzato === 'SI' && disoleato === 'SI') {
+           id += "DP"; // NUOVA CONDIZIONE
        } else if (pastorizzato === 'SI') {
            id += "PP";
        } else {
@@ -1295,9 +1307,8 @@ $(document).ready(function() {
            id += "N";
        }
        
-       // Disoleato
-       const disoleato = data.disoleato;
-       if (disoleato === 'SI') {
+       // Disoleato (solo se non già incluso nella logica precedente)
+       if (!(pastorizzato === 'SI' && disoleato === 'SI') && disoleato === 'SI') {
            id += "D";
        }
        
@@ -1319,7 +1330,7 @@ $(document).ready(function() {
        return id;
    }
 
-   // Generazione codice ID per destinazione specifica senza spazi
+   // Generazione codice ID per destinazione specifica senza spazi - MODIFICATA PER DISOLEATO + PASTORIZZATO
    function generateDestinationID(card, dest) {
        const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
        if (charSection.length === 0) return '';
@@ -1377,12 +1388,15 @@ $(document).ready(function() {
            id += polpa;
        }
        
-       // Pastorizzazione/Concentrazione della destinazione
+       // Pastorizzazione/Concentrazione/Disoleato della destinazione - LOGICA MODIFICATA
        const pastorizzato = charSection.find('.dest-pastorizzato').val();
+       const disoleato = charSection.find('.dest-disoleato').val();
        const isConcentrato = dest === 'CONCENTRATO';
        
        if (isConcentrato) {
            id += "CP";
+       } else if (pastorizzato === 'SI' && disoleato === 'SI') {
+           id += "DP"; // NUOVA CONDIZIONE
        } else if (pastorizzato === 'SI') {
            id += "PP";
        } else {
@@ -1397,9 +1411,8 @@ $(document).ready(function() {
            id += "N";
        }
        
-       // Disoleato della destinazione
-       const disoleato = charSection.find('.dest-disoleato').val();
-       if (disoleato === 'SI') {
+       // Disoleato della destinazione (solo se non già incluso nella logica precedente)
+       if (!(pastorizzato === 'SI' && disoleato === 'SI') && disoleato === 'SI') {
            id += "D";
        }
        
