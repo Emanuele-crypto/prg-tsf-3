@@ -688,7 +688,7 @@ body {
    resize: vertical;
 }
 
-/* MODIFICATA: Stampa con tabella contenente totali e testo a capo nelle celle */
+/* MODIFICATA: Stampa con tabella migliorata e testo su due righe */
 @media print {
    body { 
        margin: 8mm !important;
@@ -758,6 +758,10 @@ body {
        display: none !important;
    }
    
+   .summary-section {
+       display: none !important;
+   }
+   
    .print-table {
        display: table !important;
        width: 100% !important;
@@ -789,14 +793,16 @@ body {
    .print-table-cell {
        display: table-cell !important;
        border: 1px solid #000000 !important;
-       padding: 3px !important;
+       padding: 2px !important;
        text-align: center !important;
-       vertical-align: middle !important;
+       vertical-align: top !important;
        font-size: 6px !important;
-       /* NUOVO: Permetti il testo a capo nelle celle */
-       white-space: pre-wrap !important;
+       /* NUOVO: Testo su due righe */
+       line-height: 1.2 !important;
+       height: 24px !important;
+       max-width: 60px !important;
        word-wrap: break-word !important;
-       overflow-wrap: break-word !important;
+       white-space: normal !important;
    }
    
    .print-table-header .print-table-cell {
@@ -804,18 +810,7 @@ body {
        color: #ffffff !important;
        font-weight: bold !important;
        font-size: 7px !important;
-   }
-   
-   /* NUOVE: Righe totali con sfondo diverso */
-   .print-table-totals-row {
-       background-color: #ffc107 !important;
-       font-weight: bold !important;
-   }
-   
-   .print-table-totals-row .print-table-cell {
-       background-color: #ffc107 !important;
-       color: #000000 !important;
-       font-weight: bold !important;
+       height: 32px !important;
    }
    
    .bio-red-cell {
@@ -860,13 +855,26 @@ body {
        background-color: #fff3cd !important;
    }
    
-   /* NASCOSTA: Sezione riepilogo nascosta in stampa */
-   .summary-section {
-       display: none !important;
+   .total-succo2-row {
+       background-color: #e8f4f8 !important;
+   }
+   
+   .total-succo2-row .print-table-cell {
+       background-color: #e8f4f8 !important;
+       font-weight: bold !important;
+   }
+   
+   .total-torchiato-row {
+       background-color: #fff8e1 !important;
+   }
+   
+   .total-torchiato-row .print-table-cell {
+       background-color: #fff8e1 !important;
+       font-weight: bold !important;
    }
    
    .destinations-details {
-       font-size: 6px !important;
+       font-size: 5px !important;
        line-height: 1.1 !important;
    }
    
@@ -1007,25 +1015,25 @@ body {
        <!-- I fornitori verranno aggiunti dinamicamente qui -->
    </div>
 
-   <!-- MODIFICATA: Tabella per stampa con colonna concentrato -->
+   <!-- MODIFICATA: Tabella per stampa con colonna concentrato e righe totali -->
    <div class="print-table" style="display: none;">
        <div class="print-table-header">
            <div class="print-table-row">
                <div class="print-table-cell">LINEA</div>
                <div class="print-table-cell">FORNITORE</div>
-               <div class="print-table-cell">GIACENZA</div>
-               <div class="print-table-cell">ENTRATA</div>
-               <div class="print-table-cell">TRASFORMATA</div>
-               <div class="print-table-cell">RIMANENZA</div>
+               <div class="print-table-cell">GIACENZA<br/>kg</div>
+               <div class="print-table-cell">ENTRATA<br/>kg</div>
+               <div class="print-table-cell">TRASFORMATA<br/>kg</div>
+               <div class="print-table-cell">RIMANENZA<br/>kg</div>
                <div class="print-table-cell">CERT.</div>
                <div class="print-table-cell">VARIETA'</div>
-               <div class="print-table-cell">PORTATA</div>
+               <div class="print-table-cell">PORTATA<br/>kg/h</div>
                <div class="print-table-cell">INIZIO</div>
                <div class="print-table-cell">FINE</div>
-               <div class="print-table-cell">Q. SUCCO 1^</div>
-               <div class="print-table-cell">CONCENTRATO</div>
+               <div class="print-table-cell">Q. SUCCO 1^<br/>kg</div>
+               <div class="print-table-cell">CONCENTRATO<br/>kg</div>
                <div class="print-table-cell">DESTINAZIONI</div>
-               <div class="print-table-cell">ID DESTINAZIONI</div>
+               <div class="print-table-cell">ID<br/>DESTINAZIONI</div>
                <div class="print-table-cell">NOTE</div>
            </div>
        </div>
@@ -1214,6 +1222,105 @@ $(document).ready(function() {
            id += " " + (altraCert || "XX").toUpperCase().replace(/\s+/g, '').replace(/\//g, '');
        } else if (cert) {
            id += " " + cert.replace(/\s+/g, '').replace(/\//g, '');
+       }
+       
+       return id.trim();
+   }
+
+   // NUOVA: Generazione codice ID per totali (seconda e torchiato)
+   function generateTotalProductID(tipo, data) {
+       let id = "";
+       
+       // Tipo prodotto
+       if (tipo === 'SECONDA') {
+           id += "SU ";
+       } else if (tipo === 'TORCHIATO') {
+           id += "SU ";
+       }
+       
+       // Tipo agrume
+       const agrume = $('#tipo-agrume-giornaliero').val();
+       
+       switch(agrume) {
+           case 'LIMONE':
+               id += "LE ";
+               break;
+           case 'ARANCIA ROSSA':
+               id += "AR ";
+               break;
+           case 'ARANCIA BIONDA':
+               id += "AB ";
+               break;
+           case 'MANDARINO':
+               id += "MA ";
+               break;
+           case 'BERGAMOTTO':
+               id += "BE ";
+               break;
+           case 'POMPELMO':
+               id += "PO ";
+               break;
+           default:
+               id += "XX ";
+       }
+       
+       // Brix
+       const brix = data.brix;
+       if (brix === 'NAT') {
+           id += "00 ";
+       } else {
+           id += brix + " ";
+       }
+       
+       // Tenore polpa
+       const polpa = data.polpa;
+       if (polpa === 'STANDARD') {
+           id += "UF ";
+       } else {
+           id += polpa + " ";
+       }
+       
+       // Pastorizzazione/Concentrazione
+       const pastorizzato = data.pastorizzato;
+       const isConcentrato = data.destinazione === 'CONCENTRATO';
+       
+       if (isConcentrato) {
+           id += "CP ";
+       } else if (pastorizzato === 'SI') {
+           id += "PP ";
+       } else {
+           id += "NA ";
+       }
+       
+       // Conservazione
+       const conservato = data.conservato;
+       if (conservato === 'SI') {
+           id += "C ";
+       } else {
+           id += "N ";
+       }
+       
+       // Disoleato
+       const disoleato = data.disoleato;
+       if (disoleato === 'SI') {
+           id += "D ";
+       } else {
+           id += "";
+       }
+       
+       // Certificazione dalla prima carta fornitore disponibile
+       const firstCard = $('.supplier-card').first();
+       if (firstCard.length > 0) {
+           const cert = firstCard.find('.certificazione-prodotto').val();
+           const bioStatus = data.bio || 'SI';
+           
+           if (bioStatus === 'NO' || bioStatus === 'DECLASSATO') {
+               id += "";
+           } else if (cert === 'CONVENZIONALE') {
+               id += "";
+           } else if (cert) {
+               id += " " + cert.replace(/\s+/g, '').replace(/\//g, '');
+           }
        }
        
        return id.trim();
@@ -1522,7 +1629,7 @@ $(document).ready(function() {
        return html;
    }
 
-   // MODIFICATA: Genera tabella per stampa con colonna concentrato e righe totali
+   // NUOVA: Genera tabella per stampa con colonna concentrato e righe totali integrate
    function generatePrintTable() {
        const tbody = $('#print-table-body');
        tbody.empty();
@@ -1552,20 +1659,19 @@ $(document).ready(function() {
            let quantitaTotale = quantitaBase;
            let note = '';
            
-           // Calcola concentrato
+           // Calcola concentrato per questo fornitore
            const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
-           const hasConcentrato = selectedDestinations.some(dest => dest === 'CONCENTRATO');
-           let concentrato = '';
-           
-           if (hasConcentrato) {
-               // Cerca la prima destinazione concentrato e il suo brix
-               const concentratoDestSection = card.find('.destination-characteristics[data-dest="CONCENTRATO"]');
-               if (concentratoDestSection.length > 0) {
-                   const brix = concentratoDestSection.find('.dest-brix').val();
-                   const qty = card.find('.distribution-qty[data-dest="CONCENTRATO"]').val() || quantitaTotale;
-                   concentrato = calculateConcentrato(qty, brix) + ' kg';
+           let concentratoFornitore = 0;
+           selectedDestinations.forEach(dest => {
+               const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
+               if (charSection.length > 0) {
+                   const brix = charSection.find('.dest-brix').val();
+                   const qtyDest = parseFloat(card.find(`.distribution-qty[data-dest="${dest}"]`).val()) || 0;
+                   if (brix && brix !== 'NAT' && qtyDest > 0) {
+                       concentratoFornitore += parseFloat(calculateConcentrato(qtyDest, brix));
+                   }
                }
-           }
+           });
            
            // Aggiungi trasferimenti ricevuti al totale
            if (transferCompositionData[index]) {
@@ -1580,7 +1686,7 @@ $(document).ready(function() {
                }
            }
            
-           // Raccogli destinazioni e quantità con testo a capo
+           // Raccogli destinazioni e quantità
            let destinationsInfo = '';
            let destinationIDs = '';
            
@@ -1589,18 +1695,18 @@ $(document).ready(function() {
                    const qty = card.find(`.distribution-qty[data-dest="${dest}"]`).val() || '0';
                    
                    if (destIndex > 0) {
-                       destinationsInfo += '\n';
-                       destinationIDs += '\n';
+                       destinationsInfo += '<br/>';
+                       destinationIDs += '<br/>';
                    }
                    
-                   destinationsInfo += `${dest}:\n${qty}kg`;
+                   destinationsInfo += `<strong>${dest}:</strong>\n${qty}kg`;
                    const destID = generateDestinationID(card, dest);
                    destinationIDs += destID;
                }
            });
            
            if (!destinationsInfo && selectedDestinations.length > 0) {
-               destinationsInfo = selectedDestinations.join('\n');
+               destinationsInfo = selectedDestinations.join(', ');
            }
            
            // Determina colore combinazione e tipo
@@ -1613,7 +1719,7 @@ $(document).ready(function() {
                
                const combinationTotal = calculateCombinationTotal(combinationColor);
                if (combinationTotal > 0) {
-                   const combinationNote = `COMB. ${combinationColor.toUpperCase()}:\n${combinationTotal.toFixed(1)}kg`;
+                   const combinationNote = `COMB.\n${combinationColor.toUpperCase()}:\n${combinationTotal.toFixed(1)}kg`;
                    note = note ? `${note}\n${combinationNote}` : combinationNote;
                }
            } else if (transferStatus) {
@@ -1651,7 +1757,7 @@ $(document).ready(function() {
                    <div class="print-table-cell">${inizio}</div>
                    <div class="print-table-cell">${fine}</div>
                    <div class="print-table-cell">${quantitaTotale.toFixed(1)}</div>
-                   <div class="print-table-cell">${concentrato}</div>
+                   <div class="print-table-cell">${concentratoFornitore.toFixed(1)}</div>
                    <div class="print-table-cell destinations-details">${destinationsInfo}</div>
                    <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${destinationIDs}</div>
                    <div class="print-table-cell" style="font-size: 6px;">${note}</div>
@@ -1661,14 +1767,11 @@ $(document).ready(function() {
            tbody.append(row);
        });
        
-       // NUOVA: Aggiungi righe totali
-       addTotalsRowsToTable(tbody);
-   }
-
-   // NUOVA: Funzione per aggiungere righe totali nella tabella
-   function addTotalsRowsToTable(tbody) {
+       // NUOVO: Aggiungi righe totali Succo 2ª e Torchiato
        let totalSeconda = 0;
        let totalTorchiato = 0;
+       let concentratoSeconda = 0;
+       let concentratoTorchiato = 0;
        const defaultSeconda = 5;
        const defaultTorchiato = 6;
        
@@ -1684,22 +1787,47 @@ $(document).ready(function() {
            }
        });
        
+       // Calcola concentrati
+       const brixSeconda = $('#brix-seconda-totale').val() || 'NAT';
+       const brixTorchiato = $('#brix-torchiato-totale').val() || '45';
+       
+       if (brixSeconda !== 'NAT') {
+           concentratoSeconda = parseFloat(calculateConcentrato(totalSeconda, brixSeconda));
+       }
+       if (brixTorchiato !== 'NAT') {
+           concentratoTorchiato = parseFloat(calculateConcentrato(totalTorchiato, brixTorchiato));
+       }
+       
+       // Genera ID per totali
+       const secondaData = {
+           polpa: $('#polpa-seconda-totale').val() || '<1%',
+           brix: brixSeconda,
+           pastorizzato: $('#pastorizzato-seconda-totale').val() || 'SI',
+           disoleato: $('#disoleato-seconda-totale').val() || 'NO',
+           conservato: $('#conservato-seconda-totale').val() || 'SI',
+           destinazione: $('#destinazione-seconda-totale').val() || 'NAT IN TINI',
+           bio: 'SI'
+       };
+       
+       const torchiatoData = {
+           polpa: $('#polpa-torchiato-totale').val() || '<1%',
+           brix: brixTorchiato,
+           pastorizzato: $('#pastorizzato-torchiato-totale').val() || 'SI',
+           disoleato: $('#disoleato-torchiato-totale').val() || 'NO',
+           conservato: $('#conservato-torchiato-totale').val() || 'NO',
+           destinazione: $('#destinazione-torchiato-totale').val() || 'CONCENTRATO',
+           bio: 'SI'
+       };
+       
+       const idSeconda = generateTotalProductID('SECONDA', secondaData);
+       const idTorchiato = generateTotalProductID('TORCHIATO', torchiatoData);
+       
+       // Aggiungi riga Totale Succo 2ª
        if (totalSeconda > 0) {
-           // Ottieni dati dai campi riepilogo se esistono
-           const destSeconda = $('#destinazione-seconda-totale').val() || 'NAT IN TINI';
-           const polpaSeconda = $('#polpa-seconda-totale').val() || '<1%';
-           const brixSeconda = $('#brix-seconda-totale').val() || 'NAT';
-           const pastorizzatoSeconda = $('#pastorizzato-seconda-totale').val() || 'SI';
-           const disoleatoSeconda = $('#disoleato-seconda-totale').val() || 'NO';
-           const conservatoSeconda = $('#conservato-seconda-totale').val() || 'SI';
-           const noteSeconda = $('#note-seconda-totale').val() || '';
-           
-           const caratteristicheSeconda = `Polpa: ${polpaSeconda}\n°BX: ${brixSeconda}\nPast: ${pastorizzatoSeconda}\nDisol: ${disoleatoSeconda}\nCons: ${conservatoSeconda}`;
-           
            const rowSeconda = `
-               <div class="print-table-row print-table-totals-row">
-                   <div class="print-table-cell">TOTALE</div>
-                   <div class="print-table-cell">SUCCO 2ª</div>
+               <div class="print-table-row total-succo2-row">
+                   <div class="print-table-cell">BOE/1100</div>
+                   <div class="print-table-cell">TOTALE SUCCO 2ª</div>
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">-</div>
@@ -1710,33 +1838,21 @@ $(document).ready(function() {
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">${totalSeconda.toFixed(1)}</div>
-                   <div class="print-table-cell">-</div>
-                   <div class="print-table-cell">${destSeconda}</div>
-                   <div class="print-table-cell">${caratteristicheSeconda}</div>
-                   <div class="print-table-cell">${noteSeconda}</div>
+                   <div class="print-table-cell">${concentratoSeconda.toFixed(1)}</div>
+                   <div class="print-table-cell">${secondaData.destinazione}<br/>Polpa: ${secondaData.polpa}<br/>°BX: ${secondaData.brix}</div>
+                   <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${idSeconda}</div>
+                   <div class="print-table-cell">TOTALE SUCCO 2ª<br/>LINEA BOE/1100</div>
                </div>
            `;
-           
            tbody.append(rowSeconda);
        }
        
+       // Aggiungi riga Totale Torchiato
        if (totalTorchiato > 0) {
-           // Ottieni dati dai campi riepilogo se esistono
-           const destTorchiato = $('#destinazione-torchiato-totale').val() || 'CONCENTRATO';
-           const polpaTorchiato = $('#polpa-torchiato-totale').val() || '<1%';
-           const brixTorchiato = $('#brix-torchiato-totale').val() || '45';
-           const pastorizzatoTorchiato = $('#pastorizzato-torchiato-totale').val() || 'SI';
-           const disoleatoTorchiato = $('#disoleato-torchiato-totale').val() || 'NO';
-           const conservatoTorchiato = $('#conservato-torchiato-totale').val() || 'NO';
-           const noteTorchiato = $('#note-torchiato-totale').val() || '';
-           const concentratoTorchiato = $('#quantita-concentrato').val() || calculateConcentrato(totalTorchiato, brixTorchiato) + ' kg';
-           
-           const caratteristicheTorchiato = `Polpa: ${polpaTorchiato}\n°BX: ${brixTorchiato}\nPast: ${pastorizzatoTorchiato}\nDisol: ${disoleatoTorchiato}\nCons: ${conservatoTorchiato}`;
-           
            const rowTorchiato = `
-               <div class="print-table-row print-table-totals-row">
-                   <div class="print-table-cell">TOTALE</div>
-                   <div class="print-table-cell">TORCHIATO</div>
+               <div class="print-table-row total-torchiato-row">
+                   <div class="print-table-cell">TORCHI FASO</div>
+                   <div class="print-table-cell">TOTALE TORCHIATO</div>
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">-</div>
@@ -1747,13 +1863,12 @@ $(document).ready(function() {
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">-</div>
                    <div class="print-table-cell">${totalTorchiato.toFixed(1)}</div>
-                   <div class="print-table-cell">${concentratoTorchiato}</div>
-                   <div class="print-table-cell">${destTorchiato}</div>
-                   <div class="print-table-cell">${caratteristicheTorchiato}</div>
-                   <div class="print-table-cell">${noteTorchiato}</div>
+                   <div class="print-table-cell">${concentratoTorchiato.toFixed(1)}</div>
+                   <div class="print-table-cell">${torchiatoData.destinazione}<br/>Polpa: ${torchiatoData.polpa}<br/>°BX: ${torchiatoData.brix}</div>
+                   <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${idTorchiato}</div>
+                   <div class="print-table-cell">TOTALE TORCHIATO<br/>TUTTE LE LINEE</div>
                </div>
            `;
-           
            tbody.append(rowTorchiato);
        }
    }
@@ -2117,7 +2232,8 @@ $(document).ready(function() {
            const dataFine = new Date(dataInizio.getTime() + durataTotaleMinuti * 60 * 1000);
            
            const minutiFine = dataFine.getMinutes();
-           const minutiArrotondati = Math.ceil(minutiFine / 15) * 15;
+           const minutiArrotondati = Math.ceil(minutiFine / 15)
+          * 15;
            if (minutiArrotondati === 60) {
                dataFine.setHours(dataFine.getHours() + 1, 0, 0, 0);
            } else {
@@ -2327,11 +2443,12 @@ $(document).ready(function() {
    }
 
    function updateAllTransferOptions() {
-   $('.supplier-card').each(function() {
-       const index = $(this).data('supplier-index');
-       updateTransferOptions(index);
-   });
-}
+       $('.supplier-card').each(function() {
+           const index = $(this).data('supplier-index');
+           updateTransferOptions(index);
+       });
+   }
+
    // MODIFICATA: Esegui trasferimento mantenendo quantità base separata
    window.executeTransfer = function(sourceIndex) {
        const sourceCard = $(`.supplier-card[data-supplier-index="${sourceIndex}"]`);
@@ -3451,7 +3568,7 @@ $(document).ready(function() {
    initCurrentDate();
    updateSuppliersCount();
 
-   console.log('Sistema Programma Giornaliero Trasformazione inizializzato - Versione con tabella stampa con colonna concentrato e righe totali integrate');
+   console.log('Sistema Programma Giornaliero Trasformazione inizializzato - Versione con tabella stampa migliorata, colonna concentrato e righe totali integrate');
 });
 </script>
 </body>
