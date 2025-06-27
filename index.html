@@ -13,9 +13,682 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <style>
-/* [Mantieni tutti gli stili esistenti fino alla sezione @media print] */
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
 
-/* MODIFICATA: Stampa con layout a due righe e colonna concentrato */
+body { 
+   font-family: 'Arial', sans-serif;
+   font-size: 18px;
+   line-height: 1.4;
+   color: #000000;
+   margin: 20px;
+   background-color: #f5f5f5;
+}
+
+.header {
+   text-align: center;
+   margin-bottom: 20px;
+   background: #1e3c72;
+   border: 2px solid #000000;
+   padding: 15px;
+   border-radius: 8px;
+   color: #ffffff;
+}
+
+.header h1 {
+   font-size: 24px;
+   margin-bottom: 8px;
+   font-weight: bold;
+   color: #ffffff;
+}
+
+.header .subtitle {
+   font-size: 20px;
+   margin-bottom: 8px;
+   color: #ffffff;
+}
+
+.header-info {
+   display: flex;
+   justify-content: space-around;
+   margin-top: 10px;
+   font-size: 20px;
+   color: #ffffff;
+   font-weight: bold;
+}
+
+.controls-section {
+   background-color: #e9ecef;
+   border: 1px solid #000000;
+   border-radius: 5px;
+   padding: 15px;
+   margin-bottom: 20px;
+   display: flex;
+   gap: 20px;
+   align-items: center;
+   flex-wrap: wrap;
+}
+
+.controls-section .form-group {
+   display: flex;
+   flex-direction: column;
+   min-width: 200px;
+}
+
+.controls-section label {
+   font-weight: bold;
+   margin-bottom: 5px;
+   color: #000000;
+}
+
+.controls-section .form-control,
+.controls-section .form-select {
+   border: 1px solid #000000;
+   border-radius: 4px;
+   padding: 8px 25px 8px 8px;
+   font-size: 16px;
+   background-position: right 8px center;
+   background-size: 12px;
+}
+
+.btn {
+   padding: 10px 20px;
+   border: none;
+   border-radius: 5px;
+   font-weight: bold;
+   cursor: pointer;
+   text-decoration: none;
+   display: inline-block;
+   margin: 5px;
+}
+
+.btn-primary {
+   background: #1e3c72;
+   color: white;
+}
+
+.btn-primary:hover {
+   background: #2a5298;
+   color: white;
+}
+
+.btn-success {
+   background: #28a745;
+   color: white;
+}
+
+.btn-success:hover {
+   background: #20c997;
+   color: white;
+}
+
+.btn-warning {
+   background: #ffc107;
+   color: #000000;
+}
+
+.btn-warning:hover {
+   background: #ffb300;
+   color: #000000;
+}
+
+.btn-danger {
+   background: #dc3545;
+   color: white;
+}
+
+.btn-danger:hover {
+   background: #c82333;
+   color: white;
+}
+
+.btn-info {
+   background: #17a2b8;
+   color: white;
+}
+
+.btn-info:hover {
+   background: #138496;
+   color: white;
+}
+
+.totals-section {
+   display: flex;
+   justify-content: space-around;
+   margin-bottom: 20px;
+   background-color: #ffc107;
+   padding: 15px;
+   border: 1px solid #000000;
+   border-radius: 5px;
+}
+
+.total-item {
+   text-align: center;
+   color: #000000;
+}
+
+.total-value {
+   font-size: 22px;
+   font-weight: bold;
+   color: #000000;
+}
+
+.total-label {
+   font-size: 16px;
+   margin-top: 3px;
+   color: #000000;
+}
+
+.suppliers-container {
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   gap: 10px;
+   margin-bottom: 20px;
+}
+
+.supplier-card {
+   background-color: #e9ecef;
+   border: 1px solid #000000;
+   border-radius: 5px;
+   padding: 12px;
+   page-break-inside: avoid;
+   min-height: 450px;
+}
+
+.supplier-card.combination-verde {
+   background-color: #d4edda;
+   border: 2px solid #28a745;
+}
+
+.supplier-card.combination-azzurro {
+   background-color: #d1ecf1;
+   border: 2px solid #17a2b8;
+}
+
+.supplier-card.combination-viola {
+   background-color: #e2e3f3;
+   border: 2px solid #6f42c1;
+}
+
+.supplier-card.transfer-target {
+   background-color: #fff3cd;
+   border: 2px solid #ffc107;
+}
+
+.supplier-header {
+   background: #6c757d;
+   color: #ffffff;
+   padding: 6px;
+   text-align: center;
+   font-weight: bold;
+   font-size: 18px;
+   margin: -12px -12px 12px -12px;
+   border-bottom: 1px solid #000000;
+}
+
+.supplier-header.combination-verde {
+   background: #28a745;
+}
+
+.supplier-header.combination-azzurro {
+   background: #17a2b8;
+}
+
+.supplier-header.combination-viola {
+   background: #6f42c1;
+}
+
+.supplier-header.transfer-target {
+   background: #ffc107;
+   color: #000000;
+}
+
+.form-row {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 6px;
+   align-items: center;
+}
+
+.form-label {
+   font-weight: bold;
+   color: #000000;
+   width: 45%;
+   font-size: 14px;
+}
+
+.form-label.dest-label {
+   font-size: 12px;
+}
+
+.form-input {
+   width: 53%;
+}
+
+.form-input input,
+.form-input select,
+.form-input textarea {
+   width: 100%;
+   border: 1px solid #000000;
+   border-radius: 4px;
+   padding: 4px;
+   font-size: 12px;
+}
+
+.form-input textarea {
+   min-height: 45px;
+   resize: vertical;
+}
+
+.calculated-field {
+   background-color: #e7f3ff;
+   font-weight: bold;
+   text-align: center;
+}
+
+.yield-result {
+   background-color: #e8f5e8;
+   font-weight: bold;
+   text-align: center;
+}
+
+.bio-red-field {
+   color: #dc3545 !important;
+   font-weight: bold;
+   border-color: #dc3545 !important;
+}
+
+.bio-black-field {
+   color: #000000 !important;
+   font-weight: bold;
+   border-color: #495057 !important;
+}
+
+.bio-red-text {
+   color: #dc3545 !important;
+   font-weight: bold;
+}
+
+.bio-black-text {
+   color: #000000 !important;
+   font-weight: bold;
+}
+
+.combination-result {
+   background-color: #fff3cd !important;
+   border: 2px solid #ffc107 !important;
+   font-weight: bold;
+   color: #856404 !important;
+}
+
+.auto-sum-field {
+   background-color: #fffacd !important;
+   border: 2px solid #ffd700 !important;
+   font-weight: bold;
+}
+
+.transfer-result {
+   background-color: #fff3cd !important;
+   border: 2px solid #ffc107 !important;
+   font-weight: bold;
+   color: #856404 !important;
+}
+
+/* NUOVO: Sezione trasferimenti separata */
+.transfers-section {
+   background-color: #f0f8ff;
+   border: 1px solid #17a2b8;
+   border-radius: 3px;
+   padding: 6px;
+   margin-top: 4px;
+}
+
+.transfers-title {
+   font-weight: bold;
+   color: #17a2b8;
+   font-size: 11px;
+   margin-bottom: 4px;
+   text-align: center;
+}
+
+.transfer-item {
+   font-size: 10px;
+   margin-bottom: 2px;
+   color: #495057;
+}
+
+.total-with-transfers {
+   background-color: #e7f3ff;
+   border: 1px solid #007bff;
+   padding: 3px;
+   text-align: center;
+   font-weight: bold;
+   font-size: 11px;
+   border-radius: 3px;
+   color: #007bff;
+   margin-top: 4px;
+}
+
+.section-divider {
+   border-bottom: 1px solid #6c757d;
+   margin: 6px 0;
+}
+
+.summary-section {
+   display: flex;
+   gap: 15px;
+   margin-top: 20px;
+}
+
+.summary-box {
+   flex: 1;
+   background: #ffc107;
+   padding: 12px;
+   border: 1px solid #000000;
+   border-radius: 5px;
+   color: #000000;
+   min-height: 220px;
+}
+
+.summary-title {
+   font-weight: bold;
+   font-size: 18px;
+   margin-bottom: 8px;
+   text-align: center;
+   color: #000000;
+   background-color: rgba(255, 255, 255, 0.3);
+   padding: 4px;
+   border-radius: 3px;
+}
+
+.summary-item {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 4px;
+   font-size: 14px;
+   color: #000000;
+}
+
+.summary-value {
+   font-weight: bold;
+   font-size: 16px;
+   color: #000000;
+   background-color: rgba(255, 255, 255, 0.4);
+   padding: 2px 6px;
+   border-radius: 3px;
+}
+
+.summary-input,
+.summary-textarea {
+   width: 55%;
+   border: 1px solid #000000;
+   border-radius: 3px;
+   padding: 3px;
+   font-size: 12px;
+   background-color: rgba(255, 255, 255, 0.4);
+   margin: 0;
+}
+
+.summary-textarea {
+   min-height: 40px;
+   resize: vertical;
+}
+
+.summary-notes {
+   margin-top: 8px;
+}
+
+.summary-notes strong {
+   display: block;
+   margin-bottom: 3px;
+   font-size: 13px;
+}
+
+.concentrato-field {
+   background-color: #e7f3ff;
+   font-weight: bold;
+   text-align: center;
+}
+
+.transfer-details, .distribution-details {
+   font-size: 11px;
+   color: #000000;
+   margin-top: 3px;
+   background-color: #d4edda;
+   padding: 3px;
+   border-radius: 3px;
+   border: 1px solid #28a745;
+}
+
+.combination-details {
+   font-size: 10px;
+   color: #856404;
+   margin-top: 3px;
+   background-color: #fff3cd;
+   padding: 4px;
+   border-radius: 3px;
+   border: 1px solid #ffc107;
+   line-height: 1.2;
+}
+
+.transfer-composition-details {
+   font-size: 10px;
+   color: #856404;
+   margin-top: 3px;
+   background-color: #fff3cd;
+   padding: 4px;
+   border-radius: 3px;
+   border: 1px solid #ffc107;
+   line-height: 1.2;
+}
+
+.hidden-field {
+   display: none;
+}
+
+.save-status {
+   background-color: #d4edda;
+   border: 1px solid #28a745;
+   color: #155724;
+   padding: 10px;
+   border-radius: 5px;
+   margin-bottom: 20px;
+   text-align: center;
+   display: none;
+}
+
+.save-error {
+   background-color: #f8d7da;
+   border: 1px solid #dc3545;
+   color: #721c24;
+}
+
+.select2-container {
+   width: 100% !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+   border: 1px solid #000000;
+   border-radius: 4px;
+   min-height: 30px;
+   padding: 2px;
+}
+
+.distribution-section {
+   margin-top: 8px;
+   padding: 6px;
+   border: 1px solid #17a2b8;
+   border-radius: 3px;
+   background-color: #f8f9fa;
+}
+
+.distribution-row {
+   display: flex;
+   align-items: center;
+   margin-bottom: 3px;
+   gap: 3px;
+}
+
+.distribution-dest {
+   flex: 1;
+   font-weight: bold;
+   color: #17a2b8;
+   font-size: 11px;
+}
+
+.distribution-qty {
+   width: 60px;
+   font-size: 11px;
+   padding: 2px;
+}
+
+.remaining-qty {
+   background-color: #e7f3ff;
+   border: 1px solid #2a5298;
+   padding: 3px;
+   border-radius: 3px;
+   font-weight: bold;
+   text-align: center;
+   color: #1e3c72;
+   font-size: 11px;
+   margin-bottom: 6px;
+}
+
+.transfer-section {
+   background-color: #fff3cd;
+   border: 1px solid #ffc107;
+   border-radius: 3px;
+   padding: 4px;
+   margin-top: 4px;
+}
+
+.transfer-row {
+   display: flex;
+   align-items: center;
+   gap: 3px;
+   flex-wrap: wrap;
+}
+
+.transfer-row .form-label {
+   min-width: 60px;
+   margin-bottom: 0;
+   font-size: 10px;
+   flex-shrink: 0;
+}
+
+.transfer-row .transfer-destination {
+   min-width: 80px;
+   flex: 1;
+   font-size: 10px;
+}
+
+.transfer-row .transfer-qty {
+   width: 40px;
+   font-size: 10px;
+   padding: 2px;
+}
+
+.transfer-row .btn {
+   padding: 2px 6px;
+   font-size: 9px;
+   margin: 0;
+   white-space: nowrap;
+}
+
+.combination-section {
+   background-color: #f8f9fa;
+   border: 1px solid #000000;
+   border-radius: 5px;
+   padding: 15px;
+   margin-bottom: 20px;
+}
+
+.combination-group {
+   background-color: #f0f8ff;
+   border: 2px solid #007bff;
+   border-radius: 8px;
+   padding: 15px;
+   margin-bottom: 15px;
+}
+
+.combination-group-b {
+   background-color: #f0fff0;
+   border: 2px solid #28a745;
+   border-radius: 8px;
+   padding: 15px;
+   margin-bottom: 15px;
+}
+
+.id-field {
+   background-color: #ffe4b5;
+   font-weight: bold;
+   text-align: center;
+   font-family: 'Courier New', monospace;
+   font-size: 10px;
+   border: 2px solid #ff8c00;
+}
+
+.program-id-row {
+   display: none !important;
+}
+
+.destination-characteristics {
+   background-color: #f0f8ff;
+   border: 1px solid #007bff;
+   border-radius: 3px;
+   padding: 8px;
+   margin-top: 8px;
+}
+
+.destination-title {
+   font-weight: bold;
+   color: #007bff;
+   font-size: 11px;
+   margin-bottom: 6px;
+   text-align: center;
+   background-color: rgba(0, 123, 255, 0.1);
+   padding: 3px;
+   border-radius: 3px;
+}
+
+.char-row {
+   display: flex;
+   justify-content: space-between;
+   margin-bottom: 4px;
+   align-items: center;
+}
+
+.char-label {
+   font-weight: bold;
+   color: #000000;
+   width: 30%;
+   font-size: 10px;
+}
+
+.char-input {
+   width: 68%;
+}
+
+.char-input select,
+.char-input input,
+.char-input textarea {
+   width: 100%;
+   border: 1px solid #007bff;
+   border-radius: 3px;
+   padding: 2px;
+   font-size: 9px;
+}
+
+.char-input textarea {
+   min-height: 25px;
+   resize: vertical;
+}
+
+/* MODIFICATA: Stampa con tabella contenente totali e testo a capo nelle celle */
 @media print {
    body { 
        margin: 8mm !important;
@@ -90,7 +763,7 @@
        width: 100% !important;
        border-collapse: collapse !important;
        margin-bottom: 10px !important;
-       font-size: 6px !important;
+       font-size: 7px !important;
    }
    
    .print-table-header {
@@ -107,46 +780,42 @@
    .print-table-row {
        display: table-row !important;
        page-break-inside: avoid !important;
-       height: auto !important;
    }
    
    .print-table-row:nth-child(even) {
        background-color: #f8f9fa !important;
    }
    
-   /* NUOVA: Celle su due righe */
    .print-table-cell {
        display: table-cell !important;
        border: 1px solid #000000 !important;
-       padding: 2px !important;
+       padding: 3px !important;
        text-align: center !important;
-       vertical-align: top !important;
-       font-size: 5px !important;
-       line-height: 1.1 !important;
-       height: auto !important;
+       vertical-align: middle !important;
+       font-size: 6px !important;
+       /* NUOVO: Permetti il testo a capo nelle celle */
+       white-space: pre-wrap !important;
        word-wrap: break-word !important;
-   }
-   
-   /* NUOVA: Layout a due righe per contenuto celle */
-   .cell-line1 {
-       display: block !important;
-       font-weight: bold !important;
-       margin-bottom: 1px !important;
-   }
-   
-   .cell-line2 {
-       display: block !important;
-       font-size: 4px !important;
-       color: #666 !important;
+       overflow-wrap: break-word !important;
    }
    
    .print-table-header .print-table-cell {
        background-color: #1e3c72 !important;
        color: #ffffff !important;
        font-weight: bold !important;
-       font-size: 6px !important;
-       height: 15px !important;
-       vertical-align: middle !important;
+       font-size: 7px !important;
+   }
+   
+   /* NUOVE: Righe totali con sfondo diverso */
+   .print-table-totals-row {
+       background-color: #ffc107 !important;
+       font-weight: bold !important;
+   }
+   
+   .print-table-totals-row .print-table-cell {
+       background-color: #ffc107 !important;
+       color: #000000 !important;
+       font-weight: bold !important;
    }
    
    .bio-red-cell {
@@ -191,21 +860,14 @@
        background-color: #fff3cd !important;
    }
    
-   /* NUOVA: Stili per righe totali */
-   .totals-row {
-       background-color: #ffc107 !important;
-       font-weight: bold !important;
-   }
-   
-   .totals-row .print-table-cell {
-       background-color: #ffc107 !important;
-       color: #000000 !important;
-       font-weight: bold !important;
-       font-size: 6px !important;
-   }
-   
+   /* NASCOSTA: Sezione riepilogo nascosta in stampa */
    .summary-section {
        display: none !important;
+   }
+   
+   .destinations-details {
+       font-size: 6px !important;
+       line-height: 1.1 !important;
    }
    
    @page {
@@ -213,25 +875,158 @@
        size: A4 landscape;
    }
 }
-
-/* [Mantieni tutti gli altri stili esistenti] */
 </style>
 </head>
 
 <body>
-   <!-- [Mantieni tutto l'HTML esistente fino alla tabella di stampa] -->
+   <div class="header">
+       <h1>PROGRAMMA GIORNALIERO TRASFORMAZIONE FRUTTA</h1>
+       <div class="subtitle">Sistema di Gestione Produzione - Simone Gatto</div>
+       <div class="header-info">
+           <div><strong>Data:</strong> <span id="current-date"></span></div>
+           <div><strong>Agrume:</strong> <span id="selected-agrume">N/D</span></div>
+           <div><strong>Fornitori:</strong> <span id="suppliers-count">0</span></div>
+       </div>
+       <div style="margin-top: 10px; font-size: 16px;">
+           <strong>Generato:</strong> <span id="last-revision"></span>
+       </div>
+   </div>
+
+   <!-- Status salvataggio -->
+   <div id="save-status" class="save-status">
+       <span id="save-message"></span>
+   </div>
+
+   <!-- Sezione Controlli -->
+   <div class="controls-section">
+       <div class="form-group">
+           <label for="tipo-agrume-giornaliero">Tipo di Agrume</label>
+           <select class="form-select" id="tipo-agrume-giornaliero" required>
+               <option value="">Seleziona il tipo di agrume</option>
+               <option value="LIMONE">Limone</option>
+               <option value="ARANCIA ROSSA">Arancia Rossa</option>
+               <option value="ARANCIA BIONDA">Arancia Bionda</option>               
+               <option value="MANDARINO">Mandarino</option>
+               <option value="POMPELMO">Pompelmo</option>
+               <option value="BERGAMOTTO">Bergamotto</option>
+           </select>
+       </div>
+       
+       <div class="form-group">
+           <label for="data-lavorazione">Data Lavorazione</label>
+           <input type="date" class="form-control" id="data-lavorazione" required>
+       </div>
+       
+       <div>
+           <button type="button" class="btn btn-primary" id="aggiungi-fornitore">
+               <i class="bi bi-plus-circle"></i> Aggiungi Fornitore
+           </button>
+           <button type="button" class="btn btn-info" id="salva-file">
+               <i class="bi bi-download"></i> Salva File
+           </button>
+           <button type="button" class="btn btn-info" id="carica-file">
+               <i class="bi bi-upload"></i> Carica File
+           </button>
+           <button type="button" class="btn btn-warning" onclick="window.print()">
+               <i class="bi bi-printer"></i> Stampa
+           </button>
+           <button type="button" class="btn btn-danger" id="reset-programma">
+               <i class="bi bi-arrow-clockwise"></i> Reset
+           </button>
+       </div>
+   </div>
+
+   <!-- Sezione Totali -->
+   <div class="totals-section">
+       <div class="total-item">
+           <div class="total-value" id="entrata-giornaliera-display">0</div>
+           <div class="total-label">Kg Entrata Totale</div>
+       </div>
+       <div class="total-item">
+           <div class="total-value" id="trasformata-totale-display">0</div>
+           <div class="total-label">Kg Trasformati</div>
+       </div>
+       <div class="total-item">
+           <div class="total-value" id="rimanenza-totale-display">0</div>
+           <div class="total-label">Kg Rimanenza</div>
+       </div>
+   </div>
+
+   <!-- Sezione Combinazioni Fornitori -->
+   <div id="combinazioni-section" class="combination-section hidden-field">
+       <h3 style="margin-bottom: 15px; color: #1e3c72;"><i class="bi bi-diagram-3"></i> Selezione Combinazioni Fornitori</h3>
+       
+       <div class="combination-group">
+           <h5><i class="bi bi-diagram-2"></i> Combinazione Verde - Succo 1ª</h5>
+           <div style="margin-bottom: 10px;">
+               <select class="form-select" id="combinazione-fornitori-verde" style="width: 100%; margin-bottom: 10px;">
+                   <option value="">Seleziona combinazione Verde</option>
+               </select>
+               <button type="button" class="btn btn-success" id="applica-combinazione-verde">
+                   <i class="bi bi-check-circle"></i> Applica Verde
+               </button>
+               <button type="button" class="btn btn-warning" id="reset-combinazione-verde">
+                   <i class="bi bi-x-circle"></i> Reset Verde
+               </button>
+           </div>
+       </div>
+       
+       <div class="combination-group-b">
+           <h5><i class="bi bi-diagram-3"></i> Combinazione Azzurro - Succo 1ª</h5>
+           <div style="margin-bottom: 10px;">
+               <select class="form-select" id="combinazione-fornitori-azzurro" style="width: 100%; margin-bottom: 10px;">
+                   <option value="">Seleziona combinazione Azzurro</option>
+               </select>
+               <button type="button" class="btn btn-info" id="applica-combinazione-azzurro">
+                   <i class="bi bi-check-circle"></i> Applica Azzurro
+               </button>
+               <button type="button" class="btn btn-warning" id="reset-combinazione-azzurro">
+                   <i class="bi bi-x-circle"></i> Reset Azzurro
+               </button>
+           </div>
+       </div>
+
+       <div class="combination-group" style="background-color: #f3f0ff; border-color: #6f42c1;">
+           <h5><i class="bi bi-diagram-3"></i> Combinazione Viola - Succo 1ª</h5>
+           <div>
+               <select class="form-select" id="combinazione-fornitori-viola" style="width: 100%; margin-bottom: 10px;">
+                   <option value="">Seleziona combinazione Viola</option>
+               </select>
+               <button type="button" class="btn" style="background: #6f42c1; color: white;" id="applica-combinazione-viola">
+                   <i class="bi bi-check-circle"></i> Applica Viola
+               </button>
+               <button type="button" class="btn btn-warning" id="reset-combinazione-viola">
+                   <i class="bi bi-x-circle"></i> Reset Viola
+               </button>
+           </div>
+       </div>
+   </div>
+
+   <!-- Container Fornitori -->
+   <div class="suppliers-container" id="suppliers-container">
+       <!-- I fornitori verranno aggiunti dinamicamente qui -->
+   </div>
 
    <!-- MODIFICATA: Tabella per stampa con colonna concentrato -->
    <div class="print-table" style="display: none;">
        <div class="print-table-header">
            <div class="print-table-row">
-               <div class="print-table-cell">FORNITORE<br/>LINEA</div>
-               <div class="print-table-cell">QUANTITÀ<br/>GIACENZA-ENTRATA</div>
-               <div class="print-table-cell">TRASF-RIMAN<br/>CERT-VARIETA</div>
-               <div class="print-table-cell">PORTATA<br/>INIZIO-FINE</div>
-               <div class="print-table-cell">SUCCO 1ª<br/>CONCENTRATO</div>
-               <div class="print-table-cell">DESTINAZIONI<br/>ID DESTINAZIONI</div>
-               <div class="print-table-cell">NOTE<br/>TRASFERIMENTI</div>
+               <div class="print-table-cell">LINEA</div>
+               <div class="print-table-cell">FORNITORE</div>
+               <div class="print-table-cell">GIACENZA</div>
+               <div class="print-table-cell">ENTRATA</div>
+               <div class="print-table-cell">TRASFORMATA</div>
+               <div class="print-table-cell">RIMANENZA</div>
+               <div class="print-table-cell">CERT.</div>
+               <div class="print-table-cell">VARIETA'</div>
+               <div class="print-table-cell">PORTATA</div>
+               <div class="print-table-cell">INIZIO</div>
+               <div class="print-table-cell">FINE</div>
+               <div class="print-table-cell">Q. SUCCO 1^</div>
+               <div class="print-table-cell">CONCENTRATO</div>
+               <div class="print-table-cell">DESTINAZIONI</div>
+               <div class="print-table-cell">ID DESTINAZIONI</div>
+               <div class="print-table-cell">NOTE</div>
            </div>
        </div>
        <div class="print-table-body" id="print-table-body">
@@ -239,23 +1034,500 @@
        </div>
    </div>
 
-   <!-- [Mantieni tutto il resto dell'HTML] -->
+   <!-- Sezione Riepilogo -->
+   <div id="summary-section" class="summary-section hidden-field">
+       <!-- Il riepilogo verrà generato dinamicamente -->
+   </div>
+
+   <!-- Input file nascosto per caricamento -->
+   <input type="file" id="file-input" accept=".json" style="display: none;">
 
 <script>
 $(document).ready(function() {
-   // [Mantieni tutto il JavaScript esistente fino alla funzione generatePrintTable]
+   let supplierCount = 0;
+   let programData = {};
 
-   // MODIFICATA: Genera tabella per stampa con layout a due righe e totali integrati
+   // Variabili per le combinazioni con colori
+   let combinationData = {
+       verde: { indexes: [], details: [] },
+       azzurro: { indexes: [], details: [] },
+       viola: { indexes: [], details: [] }
+   };
+
+   // MODIFICATA: Variabili per gestione trasferimenti separati
+   let transferData = {};
+   let transferCompositionData = {}; // Per tracciare i trasferimenti ricevuti
+
+   // Definizione varietà per ogni tipo di agrume
+   const varietyOptions = {
+       'LIMONE': [
+           { value: 'VERDELLO', text: 'Verdello' },
+           { value: 'FEMMINELLO', text: 'Femminello' },
+           { value: 'INTERDONATO', text: 'Interdonato' },
+           { value: 'BIANCHETTO', text: 'Bianchetto' },
+           { value: 'MONACHELLO', text: 'Monachello' },
+           { value: 'VARIE', text: 'Varie' },
+           { value: 'ALTRO', text: 'Altro (specifica quale)' }
+       ],
+       'MANDARINO': [
+           { value: 'TARD. DI CIACULLI', text: 'Tard. di Ciaculli' },
+           { value: 'AVANA', text: 'Avana' },
+           { value: 'CLEMENTINO', text: 'Clementino' },
+           { value: 'VARIE', text: 'Varie' },
+           { value: 'ALTRO', text: 'Altro (specifica quale)' }
+       ],
+       'ARANCIA ROSSA': [
+           { value: 'MORO', text: 'Moro' },
+           { value: 'SANGUINELLA', text: 'Sanguinella' },
+           { value: 'TAROCCO', text: 'Tarocco' },
+           { value: 'VARIE', text: 'Varie' },
+           { value: 'ALTRO', text: 'Altro (specifica quale)' }
+       ],
+       'ARANCIA BIONDA': [
+           { value: 'MORO', text: 'Moro' },
+           { value: 'SANGUINELLA', text: 'Sanguinella' },
+           { value: 'TAROCCO', text: 'Tarocco' },
+           { value: 'VARIE', text: 'Varie' },
+           { value: 'ALTRO', text: 'Altro (specifica quale)' }
+       ],
+       'BERGAMOTTO': [
+           { value: 'FEMMINELLO', text: 'Femminello' },
+           { value: 'CASTAGNARO', text: 'Castagnaro' },
+           { value: 'VARIE', text: 'Varie' },
+           { value: 'ALTRO', text: 'Altro (specifica quale)' }
+       ],
+       'POMPELMO': [
+           { value: 'GIALLO', text: 'Giallo' },
+           { value: 'ROSA', text: 'Rosa' },
+           { value: 'VARIE', text: 'Varie' },
+           { value: 'ALTRO', text: 'Altro (specifica quale)' }
+       ]
+   };
+
+   // Rese per linea di trasformazione
+   const yieldsPerLine = {
+       'BOE/1100': 31.30,
+       'GOE EST/400': 31.60,
+       '400': 32.00,
+       'GOE EST/POLY': 30.60,
+       'GOE INT/POLY': 28.30,
+       'BIRILLATRICI': 26.60,
+       'GOE EST/BIRILLATRICI': 25.60,
+       'TORCHI FASO': 25.00
+   };
+
+   // MODIFICATA: Generazione codice ID prodotto con campo disoleato
+   function generateProductID(card) {
+       let id = "";
+       
+       // Tipo prodotto
+       id += "SU ";
+       
+       // Tipo agrume
+       const agrume = $('#tipo-agrume-giornaliero').val();
+       const varieta = card.find('.varieta-prodotto').val();
+       
+       switch(agrume) {
+           case 'LIMONE':
+               id += "LE ";
+               break;
+           case 'ARANCIA ROSSA':
+               id += "AR ";
+               break;
+           case 'ARANCIA BIONDA':
+               id += "AB ";
+               break;
+           case 'MANDARINO':
+               id += "MA ";
+               break;
+           case 'BERGAMOTTO':
+               id += "BE ";
+               break;
+           case 'POMPELMO':
+               id += "PO ";
+               break;
+           default:
+               id += "XX ";
+       }
+       
+       // Brix
+       const brix = card.find('.brix-prima').val();
+       if (brix === 'NAT') {
+           id += "00 ";
+       } else if (brix === 'ALTRO') {
+           const altroBrix = card.find('.altro-brix-prima').val();
+           id += (altroBrix || "XX") + " ";
+       } else {
+           id += brix + " ";
+       }
+       
+       // Tenore polpa
+       const polpa = card.find('.tenore-polpa-prima').val();
+       if (polpa === 'STANDARD') {
+           id += "UF ";
+       } else if (polpa === 'ALTRO') {
+           const altroPolpa = card.find('.altro-tenore-prima').val();
+           id += (altroPolpa || "XX") + " ";
+       } else {
+           id += polpa + " ";
+       }
+       
+       // Pastorizzazione/Concentrazione
+       const pastorizzato = card.find('.pastorizzato-prima').val();
+       const destinazioni = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
+       const isConcentrato = destinazioni.some(dest => dest === 'CONCENTRATO');
+       
+       if (isConcentrato) {
+           id += "CP ";
+       } else if (pastorizzato === 'SI') {
+           id += "PP ";
+       } else {
+           id += "NA ";
+       }
+       
+       // Conservazione
+       const conservato = card.find('.conservato-prima').val();
+       if (conservato === 'SI') {
+           id += "C ";
+       } else {
+           id += "N ";
+       }
+       
+       // NUOVO: Disoleato
+       const disoleato = card.find('.disoleato-prima').val();
+       if (disoleato === 'SI') {
+           id += "D ";
+       } else {
+           id += "";
+       }
+       
+       // Certificazione - considera bio status
+       const cert = card.find('.certificazione-prodotto').val();
+       const bioStatus = card.find('.bio-prima').val();
+       
+       if (bioStatus === 'NO' || bioStatus === 'DECLASSATO') {
+           id += "";
+       } else if (cert === 'CONVENZIONALE') {
+           id += "";
+       } else if (cert === 'ALTRO') {
+           const altraCert = card.find('.altra-certificazione').val();
+           id += " " + (altraCert || "XX").toUpperCase().replace(/\s+/g, '').replace(/\//g, '');
+       } else if (cert) {
+           id += " " + cert.replace(/\s+/g, '').replace(/\//g, '');
+       }
+       
+       return id.trim();
+   }
+
+   // MODIFICATA: Generazione codice ID per destinazione specifica con disoleato
+   function generateDestinationID(card, dest) {
+       const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
+       if (charSection.length === 0) return '';
+       
+       let id = "";
+       
+       // Tipo prodotto
+       id += "SU ";
+       
+       // Tipo agrume
+       const agrume = $('#tipo-agrume-giornaliero').val();
+       
+       switch(agrume) {
+           case 'LIMONE':
+               id += "LE ";
+               break;
+           case 'ARANCIA ROSSA':
+               id += "AR ";
+               break;
+           case 'ARANCIA BIONDA':
+               id += "AB ";
+               break;
+           case 'MANDARINO':
+               id += "MA ";
+               break;
+           case 'BERGAMOTTO':
+               id += "BE ";
+               break;
+           case 'POMPELMO':
+               id += "PO ";
+               break;
+           default:
+               id += "XX ";
+       }
+       
+       // Brix della destinazione
+       const brix = charSection.find('.dest-brix').val();
+       if (brix === 'NAT') {
+           id += "00 ";
+       } else if (brix === 'ALTRO') {
+           const altroBrix = charSection.find('.dest-brix-altro').val();
+           id += (altroBrix || "XX") + " ";
+       } else {
+           id += brix + " ";
+       }
+       
+       // Tenore polpa della destinazione
+       const polpa = charSection.find('.dest-polpa').val();
+       if (polpa === 'STANDARD') {
+           id += "UF ";
+       } else if (polpa === 'ALTRO') {
+           const altroPolpa = charSection.find('.dest-polpa-altro').val();
+           id += (altroPolpa || "XX") + " ";
+       } else {
+           id += polpa + " ";
+       }
+       
+       // Pastorizzazione/Concentrazione della destinazione
+       const pastorizzato = charSection.find('.dest-pastorizzato').val();
+       const isConcentrato = dest === 'CONCENTRATO';
+       
+       if (isConcentrato) {
+           id += "CP ";
+       } else if (pastorizzato === 'SI') {
+           id += "PP ";
+       } else {
+           id += "NA ";
+       }
+       
+       // Conservazione della destinazione
+       const conservato = charSection.find('.dest-conservato').val();
+       if (conservato === 'SI') {
+           id += "C ";
+       } else {
+           id += "N ";
+       }
+       
+       // NUOVO: Disoleato della destinazione
+       const disoleato = charSection.find('.dest-disoleato').val();
+       if (disoleato === 'SI') {
+           id += "D ";
+       } else {
+           id += "";
+       }
+       
+       // Certificazione
+       const cert = card.find('.certificazione-prodotto').val();
+       const bioStatus = charSection.find('.dest-bio').val();
+       
+       if (bioStatus === 'NO' || bioStatus === 'DECLASSATO') {
+           id += "";
+       } else if (cert === 'CONVENZIONALE') {
+           id += "";
+       } else if (cert === 'ALTRO') {
+           const altraCert = card.find('.altra-certificazione').val();
+           id += " " + (altraCert || "XX").toUpperCase().replace(/\s+/g, '').replace(/\//g, '');
+       } else if (cert) {
+           id += " " + cert.replace(/\s+/g, '').replace(/\//g, '');
+       }
+       
+       return id.trim();
+   }
+
+   // Funzione per determinare il colore della combinazione di un fornitore
+   function getSupplierCombinationColor(supplierIndex) {
+       for (const [color, data] of Object.entries(combinationData)) {
+           if (data.indexes.includes(supplierIndex)) {
+               return color;
+           }
+       }
+       return null;
+   }
+
+   // Funzione per determinare se un fornitore è destinatario di trasferimenti
+   function getSupplierTransferStatus(supplierIndex) {
+       return transferCompositionData[supplierIndex] ? 'transfer-target' : null;
+   }
+
+   // Funzione per calcolare il totale di una combinazione
+   function calculateCombinationTotal(color) {
+       if (!combinationData[color] || !combinationData[color].details) return 0;
+       
+       return combinationData[color].details.reduce((total, detail) => {
+           return total + parseFloat(detail.risultato);
+       }, 0);
+   }
+
+   // Funzione per calcolare la quantità concentrato
+   function calculateConcentrato(quantita, brix) {
+       if (!quantita || !brix || brix === 'NAT') return 0;
+       const brixValue = parseFloat(brix);
+       if (isNaN(brixValue) || brixValue === 0) return 0;
+       return (quantita * 0.90 * 7.5 / brixValue).toFixed(1);
+   }
+
+   // Inizializzazione data corrente e ultima revisione
+   function initCurrentDate() {
+       const today = new Date();
+       const formatted = today.toLocaleDateString('it-IT', {
+           weekday: 'long',
+           year: 'numeric',
+           month: 'long',
+           day: 'numeric'
+       });
+       $('#current-date').text(formatted);
+       $('#data-lavorazione').val(today.toISOString().split('T')[0]);
+       
+       updateLastRevision();
+   }
+
+   // Aggiorna ultima revisione
+   function updateLastRevision() {
+       const now = new Date();
+       const lastRevision = now.toLocaleDateString('it-IT') + ' - ' + now.toLocaleTimeString('it-IT');
+       $('#last-revision').text(lastRevision);
+   }
+
+   // Calcolo automatico rese in base al tipo di agrume
+   function calculateAutoYields(agrume) {
+       const yields = {
+           'LIMONE': { prima: 33, seconda: 5, torchiato: 6 },
+           'ARANCIA ROSSA': { prima: 35, seconda: 12, torchiato: 6 },
+           'ARANCIA BIONDA': { prima: 35, seconda: 12, torchiato: 6 },
+           'MANDARINO': { prima: 48, seconda: 10, torchiato: 4 },
+           'POMPELMO': { prima: 30, seconda: 15, torchiato: 6 },
+           'BERGAMOTTO': { prima: 30, seconda: 8, torchiato: 3 }
+       };
+       return yields[agrume] || { prima: 33, seconda: 5, torchiato: 6 };
+   }
+
+   // Funzione per ottenere la resa in base alla linea di trasformazione
+   function getYieldByLine(linea) {
+       return yieldsPerLine[linea] || 30;
+   }
+
+   // MODIFICATA: Funzione per aggiornare il concentrato del fornitore
+   window.updateSupplierConcentrato = function(index) {
+       const card = $(`.supplier-card[data-supplier-index="${index}"]`);
+       const quantitaPrima = parseFloat(card.find('.quantita-prima').val()) || 0;
+       const brix = card.find('.brix-prima').val();
+       
+       if (brix && brix !== 'NAT') {
+           const concentrato = calculateConcentrato(quantitaPrima, brix);
+           card.find('.quantita-concentrato-prima').val(concentrato + ' kg');
+           card.find('.concentrato-prima-row').removeClass('hidden-field');
+       } else {
+           card.find('.quantita-concentrato-prima').val('');
+           card.find('.concentrato-prima-row').addClass('hidden-field');
+       }
+       
+       updateProductID(index);
+   };
+
+   // Aggiorna il campo ID del prodotto
+   function updateProductID(index) {
+       const card = $(`.supplier-card[data-supplier-index="${index}"]`);
+       const productID = generateProductID(card);
+       card.find('.product-id').val(productID);
+   }
+
+   // MODIFICATA: Crea sezioni caratteristiche per ogni destinazione con disoleato
+   function createDestinationCharacteristics(destinations, supplierIndex) {
+       let html = '';
+       
+       destinations.forEach((dest, destIndex) => {
+           if (dest && destIndex < 3) {
+               html += `
+                   <div class="destination-characteristics" data-dest="${dest}" data-dest-index="${destIndex}">
+                       <div class="destination-title">${dest}</div>
+                       
+                       <div class="char-row">
+                           <span class="char-label">Polpa:</span>
+                           <div class="char-input">
+                               <select class="dest-polpa" data-dest="${dest}" onchange="updateProductID(${supplierIndex})">
+                                   <option value="STANDARD">STANDARD</option>
+                                   <option value="LIMPIDO">LIMPIDO</option>
+                                   <option value="<1%"><1%</option>
+                                   <option value="2%">2%</option>
+                                   <option value="3%">3%</option>
+                                   <option value="6%">6%</option>
+                                   <option value="ALTRO">ALTRO</option>
+                               </select>
+                               <input type="text" class="dest-polpa-altro hidden-field" placeholder="Altro" style="margin-top: 2px;">
+                           </div>
+                       </div>
+                       
+                       <div class="char-row">
+                           <span class="char-label">°BX:</span>
+                           <div class="char-input">
+                               <select class="dest-brix" data-dest="${dest}" onchange="updateProductID(${supplierIndex})">
+                                   <option value="NAT">NAT</option>
+                                   <option value="20">20</option>
+                                   <option value="32">32</option>
+                                   <option value="40">40</option>
+                                   <option value="45">45</option>
+                                   <option value="48">48</option>
+                                   <option value="50">50</option>
+                                   <option value="55">55</option>
+                                   <option value="60">60</option>
+                                   <option value="63.5">63.5</option>
+                                   <option value="65">65</option>
+                                   <option value="ALTRO">ALTRO</option>
+                               </select>
+                               <input type="text" class="dest-brix-altro hidden-field" placeholder="Altro" style="margin-top: 2px;">
+                           </div>
+                       </div>
+                       
+                       <div class="char-row">
+                           <span class="char-label">Bio:</span>
+                           <div class="char-input">
+                               <select class="dest-bio" data-dest="${dest}" onchange="updateProductID(${supplierIndex})">
+                                   <option value="SI">SI</option>
+                                   <option value="NO">NO</option>
+                                   <option value="DECLASSATO">DECLASSATO</option>
+                               </select>
+                           </div>
+                       </div>
+                       
+                       <div class="char-row">
+                           <span class="char-label">Pastorizzato:</span>
+                           <div class="char-input">
+                               <select class="dest-pastorizzato" data-dest="${dest}" onchange="updateProductID(${supplierIndex})">
+                                   <option value="SI">SI</option>
+                                   <option value="NO">NO</option>
+                               </select>
+                           </div>
+                       </div>
+                       
+                       <div class="char-row">
+                           <span class="char-label">Disoleato:</span>
+                           <div class="char-input">
+                               <select class="dest-disoleato" data-dest="${dest}" onchange="updateProductID(${supplierIndex})">
+                                   <option value="NO" selected>NO</option>
+                                   <option value="SI">SI</option>
+                               </select>
+                           </div>
+                       </div>
+                       
+                       <div class="char-row">
+                           <span class="char-label">Conservato:</span>
+                           <div class="char-input">
+                               <select class="dest-conservato" data-dest="${dest}" onchange="updateProductID(${supplierIndex})">
+                                   <option value="SI">SI</option>
+                                   <option value="NO" selected>NO</option>
+                               </select>
+                           </div>
+                       </div>
+                       
+                       <div class="char-row">
+                           <span class="char-label">Note:</span>
+                           <div class="char-input">
+                               <textarea class="dest-note" data-dest="${dest}" placeholder="Note per ${dest}" rows="2"></textarea>
+                           </div>
+                       </div>
+                   </div>
+               `;
+           }
+       });
+       
+       return html;
+   }
+
+   // MODIFICATA: Genera tabella per stampa con colonna concentrato e righe totali
    function generatePrintTable() {
        const tbody = $('#print-table-body');
        tbody.empty();
        
-       // Calcola totali per la sezione finale
-       let totalSeconda = 0;
-       let totalTorchiato = 0;
-       const defaultSeconda = 5;
-       const defaultTorchiato = 6;
-       
+       // Aggiungi righe fornitori
        $('.supplier-card').each(function() {
            const card = $(this);
            const index = card.data('supplier-index');
@@ -275,23 +1547,25 @@ $(document).ready(function() {
            const inizio = card.find('.orario-inizio').val() || '';
            const fine = card.find('.orario-fine-display').text().replace(/<[^>]*>/g, '') || '';
            
-           // Calcola totali per sezione finale
-           const quantitaTrasformataNum = parseFloat(trasformata) || 0;
-           if (quantitaTrasformataNum > 0) {
-               if (linea === 'BOE/1100') {
-                   totalSeconda += (quantitaTrasformataNum * defaultSeconda / 100);
-               }
-               totalTorchiato += (quantitaTrasformataNum * defaultTorchiato / 100);
-           }
-           
-           // Ottieni quantità base dalla resa
+           // MODIFICATA: Ottieni quantità base dalla resa
            const quantitaBase = parseFloat(card.find('.quantita-prima').val()) || 0;
            let quantitaTotale = quantitaBase;
-           let noteTransfer = '';
+           let note = '';
            
-           // NUOVA: Calcola concentrato
-           const brix = card.find('.brix-prima').val();
-           const concentrato = calculateConcentrato(quantitaTotale, brix);
+           // Calcola concentrato
+           const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
+           const hasConcentrato = selectedDestinations.some(dest => dest === 'CONCENTRATO');
+           let concentrato = '';
+           
+           if (hasConcentrato) {
+               // Cerca la prima destinazione concentrato e il suo brix
+               const concentratoDestSection = card.find('.destination-characteristics[data-dest="CONCENTRATO"]');
+               if (concentratoDestSection.length > 0) {
+                   const brix = concentratoDestSection.find('.dest-brix').val();
+                   const qty = card.find('.distribution-qty[data-dest="CONCENTRATO"]').val() || quantitaTotale;
+                   concentrato = calculateConcentrato(qty, brix) + ' kg';
+               }
+           }
            
            // Aggiungi trasferimenti ricevuti al totale
            if (transferCompositionData[index]) {
@@ -300,34 +1574,33 @@ $(document).ready(function() {
                
                if (transfersTotal > 0) {
                    const compositionDetails = transferCompositionData[index].details.map(detail => 
-                       `${detail.amount}kg da F${detail.fromSupplier}`
+                       `${detail.amount}kg da F${detail.fromSupplier}\n(${detail.fromName})`
                    ).join(', ');
-                   noteTransfer = `TRASF: ${compositionDetails}`;
+                   note = `TRASF.:\n${compositionDetails}\nTot: ${quantitaTotale.toFixed(1)}kg`;
                }
            }
            
-           // Raccogli destinazioni e quantità
+           // Raccogli destinazioni e quantità con testo a capo
            let destinationsInfo = '';
            let destinationIDs = '';
-           const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
            
            selectedDestinations.forEach((dest, destIndex) => {
                if (destIndex < 3) {
                    const qty = card.find(`.distribution-qty[data-dest="${dest}"]`).val() || '0';
                    
                    if (destIndex > 0) {
-                       destinationsInfo += ', ';
-                       destinationIDs += ', ';
+                       destinationsInfo += '\n';
+                       destinationIDs += '\n';
                    }
                    
-                   destinationsInfo += `${dest}: ${qty}kg`;
+                   destinationsInfo += `${dest}:\n${qty}kg`;
                    const destID = generateDestinationID(card, dest);
                    destinationIDs += destID;
                }
            });
            
            if (!destinationsInfo && selectedDestinations.length > 0) {
-               destinationsInfo = selectedDestinations.join(', ');
+               destinationsInfo = selectedDestinations.join('\n');
            }
            
            // Determina colore combinazione e tipo
@@ -340,8 +1613,8 @@ $(document).ready(function() {
                
                const combinationTotal = calculateCombinationTotal(combinationColor);
                if (combinationTotal > 0) {
-                   const combinationNote = `COMB ${combinationColor.toUpperCase()}: ${combinationTotal.toFixed(1)}kg`;
-                   noteTransfer = noteTransfer ? `${noteTransfer} - ${combinationNote}` : combinationNote;
+                   const combinationNote = `COMB. ${combinationColor.toUpperCase()}:\n${combinationTotal.toFixed(1)}kg`;
+                   note = note ? `${note}\n${combinationNote}` : combinationNote;
                }
            } else if (transferStatus) {
                rowClass = 'transfer-target-row';
@@ -364,119 +1637,124 @@ $(document).ready(function() {
                }
            }
            
-           // MODIFICATA: Struttura cella su due righe
            const row = `
                <div class="print-table-row ${rowClass}">
-                   <div class="print-table-cell">
-                       <div class="cell-line1">${nomeFornitore || ''}</div>
-                       <div class="cell-line2">${linea}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">G:${giacenza} E:${entrata}</div>
-                       <div class="cell-line2">Tot: ${(parseFloat(giacenza) + parseFloat(entrata)).toFixed(0)}kg</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">T:${trasformata} R:${rimanenza}</div>
-                       <div class="cell-line2 ${certClass}">${cert}</div>
-                       <div class="cell-line2 ${varietaClass}">${varieta}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">${portata}kg/h</div>
-                       <div class="cell-line2">${inizio}-${fine}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">${quantitaTotale.toFixed(1)}kg</div>
-                       <div class="cell-line2">${concentrato}kg conc.</div>
-                   </div>
-                   <div class="print-table-cell destinations-details">
-                       <div class="cell-line1">${destinationsInfo}</div>
-                       <div class="cell-line2" style="font-family: 'Courier New', monospace;">${destinationIDs}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1" style="font-size: 4px;">${noteTransfer}</div>
-                       <div class="cell-line2">${card.find('.dest-note').first().val() || ''}</div>
-                   </div>
+                   <div class="print-table-cell">${linea}</div>
+                   <div class="print-table-cell">${nomeFornitore || ''}</div>
+                   <div class="print-table-cell">${giacenza}</div>
+                   <div class="print-table-cell">${entrata}</div>
+                   <div class="print-table-cell">${trasformata}</div>
+                   <div class="print-table-cell">${rimanenza}</div>
+                   <div class="print-table-cell ${certClass}">${cert}</div>
+                   <div class="print-table-cell ${varietaClass}">${varieta}</div>
+                   <div class="print-table-cell">${portata}</div>
+                   <div class="print-table-cell">${inizio}</div>
+                   <div class="print-table-cell">${fine}</div>
+                   <div class="print-table-cell">${quantitaTotale.toFixed(1)}</div>
+                   <div class="print-table-cell">${concentrato}</div>
+                   <div class="print-table-cell destinations-details">${destinationsInfo}</div>
+                   <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${destinationIDs}</div>
+                   <div class="print-table-cell" style="font-size: 6px;">${note}</div>
                </div>
            `;
            
            tbody.append(row);
        });
        
-       // NUOVA: Aggiungi righe totali alla fine della tabella
-       if (totalSeconda > 0) {
-           const concentratoSeconda = calculateConcentrato(totalSeconda, $('#brix-seconda-totale').val() || 'NAT');
+       // NUOVA: Aggiungi righe totali
+       addTotalsRowsToTable(tbody);
+   }
+
+   // NUOVA: Funzione per aggiungere righe totali nella tabella
+   function addTotalsRowsToTable(tbody) {
+       let totalSeconda = 0;
+       let totalTorchiato = 0;
+       const defaultSeconda = 5;
+       const defaultTorchiato = 6;
+       
+       $('.supplier-card').each(function() {
+           const quantitaTrasformata = parseFloat($(this).find('.quantita-trasformata').val()) || 0;
+           const linea = $(this).find('.linea-trasformazione').val();
            
-           const secondaRow = `
-               <div class="print-table-row totals-row">
-                   <div class="print-table-cell">
-                       <div class="cell-line1">TOTALI SUCCO 2ª</div>
-                       <div class="cell-line2">BOE/1100</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">-</div>
-                       <div class="cell-line2">-</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">-</div>
-                       <div class="cell-line2">${$('#polpa-seconda-totale').val() || '<1%'}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">-</div>
-                       <div class="cell-line2">°BX:${$('#brix-seconda-totale').val() || 'NAT'}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">${totalSeconda.toFixed(1)}kg</div>
-                       <div class="cell-line2">${concentratoSeconda}kg conc.</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">${$('#destinazione-seconda-totale').val() || 'NAT IN TINI'}</div>
-                       <div class="cell-line2">P:${$('#pastorizzato-seconda-totale').val() || 'SI'} C:${$('#conservato-seconda-totale').val() || 'SI'}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">D:${$('#disoleato-seconda-totale').val() || 'NO'}</div>
-                       <div class="cell-line2">${$('#note-seconda-totale').val() || ''}</div>
-                   </div>
+           if (quantitaTrasformata > 0) {
+               if (linea === 'BOE/1100') {
+                   totalSeconda += (quantitaTrasformata * defaultSeconda / 100);
+               }
+               totalTorchiato += (quantitaTrasformata * defaultTorchiato / 100);
+           }
+       });
+       
+       if (totalSeconda > 0) {
+           // Ottieni dati dai campi riepilogo se esistono
+           const destSeconda = $('#destinazione-seconda-totale').val() || 'NAT IN TINI';
+           const polpaSeconda = $('#polpa-seconda-totale').val() || '<1%';
+           const brixSeconda = $('#brix-seconda-totale').val() || 'NAT';
+           const pastorizzatoSeconda = $('#pastorizzato-seconda-totale').val() || 'SI';
+           const disoleatoSeconda = $('#disoleato-seconda-totale').val() || 'NO';
+           const conservatoSeconda = $('#conservato-seconda-totale').val() || 'SI';
+           const noteSeconda = $('#note-seconda-totale').val() || '';
+           
+           const caratteristicheSeconda = `Polpa: ${polpaSeconda}\n°BX: ${brixSeconda}\nPast: ${pastorizzatoSeconda}\nDisol: ${disoleatoSeconda}\nCons: ${conservatoSeconda}`;
+           
+           const rowSeconda = `
+               <div class="print-table-row print-table-totals-row">
+                   <div class="print-table-cell">TOTALE</div>
+                   <div class="print-table-cell">SUCCO 2ª</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">${totalSeconda.toFixed(1)}</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">${destSeconda}</div>
+                   <div class="print-table-cell">${caratteristicheSeconda}</div>
+                   <div class="print-table-cell">${noteSeconda}</div>
                </div>
            `;
-           tbody.append(secondaRow);
+           
+           tbody.append(rowSeconda);
        }
        
        if (totalTorchiato > 0) {
-           const concentratoTorchiato = calculateConcentrato(totalTorchiato, $('#brix-torchiato-totale').val() || '45');
+           // Ottieni dati dai campi riepilogo se esistono
+           const destTorchiato = $('#destinazione-torchiato-totale').val() || 'CONCENTRATO';
+           const polpaTorchiato = $('#polpa-torchiato-totale').val() || '<1%';
+           const brixTorchiato = $('#brix-torchiato-totale').val() || '45';
+           const pastorizzatoTorchiato = $('#pastorizzato-torchiato-totale').val() || 'SI';
+           const disoleatoTorchiato = $('#disoleato-torchiato-totale').val() || 'NO';
+           const conservatoTorchiato = $('#conservato-torchiato-totale').val() || 'NO';
+           const noteTorchiato = $('#note-torchiato-totale').val() || '';
+           const concentratoTorchiato = $('#quantita-concentrato').val() || calculateConcentrato(totalTorchiato, brixTorchiato) + ' kg';
            
-           const torchiatoRow = `
-               <div class="print-table-row totals-row">
-                   <div class="print-table-cell">
-                       <div class="cell-line1">TOTALI TORCHIATO</div>
-                       <div class="cell-line2">TUTTE LINEE</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">-</div>
-                       <div class="cell-line2">-</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">-</div>
-                       <div class="cell-line2">${$('#polpa-torchiato-totale').val() || '<1%'}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">-</div>
-                       <div class="cell-line2">°BX:${$('#brix-torchiato-totale').val() || '45'}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">${totalTorchiato.toFixed(1)}kg</div>
-                       <div class="cell-line2">${concentratoTorchiato}kg conc.</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">${$('#destinazione-torchiato-totale').val() || 'CONCENTRATO'}</div>
-                       <div class="cell-line2">P:${$('#pastorizzato-torchiato-totale').val() || 'SI'} C:${$('#conservato-torchiato-totale').val() || 'NO'}</div>
-                   </div>
-                   <div class="print-table-cell">
-                       <div class="cell-line1">D:${$('#disoleato-torchiato-totale').val() || 'NO'}</div>
-                       <div class="cell-line2">${$('#note-torchiato-totale').val() || ''}</div>
-                   </div>
+           const caratteristicheTorchiato = `Polpa: ${polpaTorchiato}\n°BX: ${brixTorchiato}\nPast: ${pastorizzatoTorchiato}\nDisol: ${disoleatoTorchiato}\nCons: ${conservatoTorchiato}`;
+           
+           const rowTorchiato = `
+               <div class="print-table-row print-table-totals-row">
+                   <div class="print-table-cell">TOTALE</div>
+                   <div class="print-table-cell">TORCHIATO</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">-</div>
+                   <div class="print-table-cell">${totalTorchiato.toFixed(1)}</div>
+                   <div class="print-table-cell">${concentratoTorchiato}</div>
+                   <div class="print-table-cell">${destTorchiato}</div>
+                   <div class="print-table-cell">${caratteristicheTorchiato}</div>
+                   <div class="print-table-cell">${noteTorchiato}</div>
                </div>
            `;
-           tbody.append(torchiatoRow);
+           
+           tbody.append(rowTorchiato);
        }
    }
 
@@ -2173,7 +3451,7 @@ $(document).ready(function() {
    initCurrentDate();
    updateSuppliersCount();
 
-   console.log('Sistema Programma Giornaliero Trasformazione inizializzato - Versione con trasferimenti separati e campo disoleato');
+   console.log('Sistema Programma Giornaliero Trasformazione inizializzato - Versione con tabella stampa con colonna concentrato e righe totali integrate');
 });
 </script>
 </body>
