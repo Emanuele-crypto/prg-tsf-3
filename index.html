@@ -1642,143 +1642,247 @@ function getBaseQuantity(card) {
        return html;
    }
 
-   // NUOVA: Genera tabella per stampa con colonna concentrato e righe totali integrate
-   function generatePrintTable() {
-       const tbody = $('#print-table-body');
-       tbody.empty();
-       
-       // Aggiungi righe fornitori
-       $('.supplier-card').each(function() {
-           const card = $(this);
-           const index = card.data('supplier-index');
-           
-           const nome = card.find('.nome-fornitore').val();
-           const altroNome = card.find('.altro-fornitore').val();
-           const nomeFornitore = nome === 'ALTRO' ? altroNome : nome;
-           
-           const linea = card.find('.linea-trasformazione').val() || '';
-           const giacenza = card.find('.giacenza-fornitore').val() || '0';
-           const entrata = card.find('.entrata-fornitore').val() || '0';
-           const trasformata = card.find('.quantita-trasformata').val() || '0';
-           const rimanenza = card.find('.rimanenza-fornitore').val() || '0';
-           const cert = card.find('.certificazione-prodotto').val() || '';
-           const varieta = card.find('.varieta-prodotto').val() || '';
-           const portata = card.find('.portata-impianto').val() || '';
-           const inizio = card.find('.orario-inizio').val() || '';
-           const fine = card.find('.orario-fine-display').text().replace(/<[^>]*>/g, '') || '';
-           
-           // MODIFICATA: Ottieni quantità base dalla resa
-           const quantitaBase = parseFloat(card.find('.quantita-prima').val()) || 0;
-           let quantitaTotale = quantitaBase;
-           let note = '';
-           
-           // Calcola concentrato per questo fornitore
-           const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
-           let concentratoFornitore = 0;
-           selectedDestinations.forEach(dest => {
-               const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
-               if (charSection.length > 0) {
-                   const brix = charSection.find('.dest-brix').val();
-                   const qtyDest = parseFloat(card.find(`.distribution-qty[data-dest="${dest}"]`).val()) || 0;
-                   if (brix && brix !== 'NAT' && qtyDest > 0) {
-                       concentratoFornitore += parseFloat(calculateConcentrato(qtyDest, brix));
-                   }
-               }
-           });
-           
-           // Aggiungi trasferimenti ricevuti al totale
-           if (transferCompositionData[index]) {
-               quantitaTotale = transferCompositionData[index].total;
-               const transfersTotal = transferCompositionData[index].total - transferCompositionData[index].baseAmount;
-               
-               if (transfersTotal > 0) {
-                   const compositionDetails = transferCompositionData[index].details.map(detail => 
-                       `${detail.amount}kg da F${detail.fromSupplier}\n(${detail.fromName})`
-                   ).join(', ');
-                   note = `TRASF.:\n${compositionDetails}\nTot: ${quantitaTotale.toFixed(1)}kg`;
-               }
-           }
-           
-           // Raccogli destinazioni e quantità
-           let destinationsInfo = '';
-           let destinationIDs = '';
-           
-           selectedDestinations.forEach((dest, destIndex) => {
-               if (destIndex < 3) {
-                   const qty = card.find(`.distribution-qty[data-dest="${dest}"]`).val() || '0';
-                   
-                   if (destIndex > 0) {
-                       destinationsInfo += '<br/>';
-                       destinationIDs += '<br/>';
-                   }
-                   
-                   destinationsInfo += `<strong>${dest}:</strong>\n${qty}kg`;
-                   const destID = generateDestinationID(card, dest);
-                   destinationIDs += destID;
-               }
-           });
-           
-           if (!destinationsInfo && selectedDestinations.length > 0) {
-               destinationsInfo = selectedDestinations.join(', ');
-           }
-           
-           // Determina colore combinazione e tipo
-           let rowClass = '';
-           const combinationColor = getSupplierCombinationColor(index);
-           const transferStatus = getSupplierTransferStatus(index);
-           
-           if (combinationColor) {
-               rowClass = `combination-${combinationColor}-row`;
-               
-               const combinationTotal = calculateCombinationTotal(combinationColor);
-               if (combinationTotal > 0) {
-                   const combinationNote = `COMB.\n${combinationColor.toUpperCase()}:\n${combinationTotal.toFixed(1)}kg`;
-                   note = note ? `${note}\n${combinationNote}` : combinationNote;
-               }
-           } else if (transferStatus) {
-               rowClass = 'transfer-target-row';
-           }
-           
-           // Determina stile bio
-           const bioStatus = card.find('.dest-bio').first().val() || 'SI';
-           const certificazione = card.find('.certificazione-prodotto').val();
-           const isBioSpecific = ['BIO EU', 'BIO DEM', 'BIO NTD', 'BIO DEM/NTD'].includes(certificazione);
-           
-           let certClass = '';
-           let varietaClass = '';
-           if (isBioSpecific) {
-               if (bioStatus === 'SI') {
-                   certClass = 'bio-red-cell';
-                   varietaClass = 'bio-red-cell';
-               } else if (bioStatus === 'DECLASSATO' || bioStatus === 'NO') {
-                   certClass = 'bio-black-cell';
-                   varietaClass = 'bio-black-cell';
-               }
-           }
-           
-           const row = `
-               <div class="print-table-row ${rowClass}">
-                   <div class="print-table-cell">${linea}</div>
-                   <div class="print-table-cell">${nomeFornitore || ''}</div>
-                   <div class="print-table-cell">${giacenza}</div>
-                   <div class="print-table-cell">${entrata}</div>
-                   <div class="print-table-cell">${trasformata}</div>
-                   <div class="print-table-cell">${rimanenza}</div>
-                   <div class="print-table-cell ${certClass}">${cert}</div>
-                   <div class="print-table-cell ${varietaClass}">${varieta}</div>
-                   <div class="print-table-cell">${portata}</div>
-                   <div class="print-table-cell">${inizio}</div>
-                   <div class="print-table-cell">${fine}</div>
-                   <div class="print-table-cell">${quantitaTotale.toFixed(1)}</div>
-                   <div class="print-table-cell">${concentratoFornitore.toFixed(1)}</div>
-                   <div class="print-table-cell destinations-details">${destinationsInfo}</div>
-                   <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${destinationIDs}</div>
-                   <div class="print-table-cell" style="font-size: 6px;">${note}</div>
-               </div>
-           `;
-           
-           tbody.append(row);
-       });
+   // MODIFICATA: Genera tabella per stampa con separazione tra quantità base e trasferimenti
+function generatePrintTable() {
+    const tbody = $('#print-table-body');
+    tbody.empty();
+    
+    // Aggiungi righe fornitori
+    $('.supplier-card').each(function() {
+        const card = $(this);
+        const index = card.data('supplier-index');
+        
+        const nome = card.find('.nome-fornitore').val();
+        const altroNome = card.find('.altro-fornitore').val();
+        const nomeFornitore = nome === 'ALTRO' ? altroNome : nome;
+        
+        const linea = card.find('.linea-trasformazione').val() || '';
+        const giacenza = card.find('.giacenza-fornitore').val() || '0';
+        const entrata = card.find('.entrata-fornitore').val() || '0';
+        const trasformata = card.find('.quantita-trasformata').val() || '0';
+        const rimanenza = card.find('.rimanenza-fornitore').val() || '0';
+        const cert = card.find('.certificazione-prodotto').val() || '';
+        const varieta = card.find('.varieta-prodotto').val() || '';
+        const portata = card.find('.portata-impianto').val() || '';
+        const inizio = card.find('.orario-inizio').val() || '';
+        const fine = card.find('.orario-fine-display').text().replace(/<[^>]*>/g, '') || '';
+        
+        // MODIFICATA: Usa sempre la quantità base per Q.SUCCO
+        const quantitaBase = getBaseQuantity(card);
+        let note = '';
+        
+        // Calcola concentrato per questo fornitore
+        const selectedDestinations = Array.from(card.find('.destinazione-prima')[0].selectedOptions).map(option => option.value);
+        let concentratoFornitore = 0;
+        selectedDestinations.forEach(dest => {
+            const charSection = card.find(`.destination-characteristics[data-dest="${dest}"]`);
+            if (charSection.length > 0) {
+                const brix = charSection.find('.dest-brix').val();
+                const qtyDest = parseFloat(card.find(`.distribution-qty[data-dest="${dest}"]`).val()) || 0;
+                if (brix && brix !== 'NAT' && qtyDest > 0) {
+                    concentratoFornitore += parseFloat(calculateConcentrato(qtyDest, brix));
+                }
+            }
+        });
+        
+        // MODIFICATA: Gestisci trasferimenti ricevuti nelle note
+        if (transferCompositionData[index] && transferCompositionData[index].details.length > 0) {
+            const transfersTotal = transferCompositionData[index].total - transferCompositionData[index].baseAmount;
+            
+            if (transfersTotal > 0) {
+                const compositionDetails = transferCompositionData[index].details.map(detail => 
+                    `+${detail.amount}kg da F${detail.fromSupplier}(${detail.fromName})`
+                ).join('\n');
+                note = `TRASF.RIC.:\n${compositionDetails}\nTot.finale: ${transferCompositionData[index].total.toFixed(1)}kg`;
+            }
+        }
+        
+        // Raccogli destinazioni e quantità
+        let destinationsInfo = '';
+        let destinationIDs = '';
+        
+        selectedDestinations.forEach((dest, destIndex) => {
+            if (destIndex < 3) {
+                const qty = card.find(`.distribution-qty[data-dest="${dest}"]`).val() || '0';
+                
+                if (destIndex > 0) {
+                    destinationsInfo += '<br/>';
+                    destinationIDs += '<br/>';
+                }
+                
+                destinationsInfo += `<strong>${dest}:</strong>\n${qty}kg`;
+                const destID = generateDestinationID(card, dest);
+                destinationIDs += destID;
+            }
+        });
+        
+        if (!destinationsInfo && selectedDestinations.length > 0) {
+            destinationsInfo = selectedDestinations.join(', ');
+        }
+        
+        // Determina colore combinazione e tipo
+        let rowClass = '';
+        const combinationColor = getSupplierCombinationColor(index);
+        const transferStatus = getSupplierTransferStatus(index);
+        
+        if (combinationColor) {
+            rowClass = `combination-${combinationColor}-row`;
+            
+            const combinationTotal = calculateCombinationTotal(combinationColor);
+            if (combinationTotal > 0) {
+                const combinationNote = `COMB.${combinationColor.toUpperCase()}:\n${combinationTotal.toFixed(1)}kg totali`;
+                note = note ? `${note}\n${combinationNote}` : combinationNote;
+            }
+        } else if (transferStatus) {
+            rowClass = 'transfer-target-row';
+        }
+        
+        // Determina stile bio
+        const bioStatus = card.find('.dest-bio').first().val() || 'SI';
+        const certificazione = card.find('.certificazione-prodotto').val();
+        const isBioSpecific = ['BIO EU', 'BIO DEM', 'BIO NTD', 'BIO DEM/NTD'].includes(certificazione);
+        
+        let certClass = '';
+        let varietaClass = '';
+        if (isBioSpecific) {
+            if (bioStatus === 'SI') {
+                certClass = 'bio-red-cell';
+                varietaClass = 'bio-red-cell';
+            } else if (bioStatus === 'DECLASSATO' || bioStatus === 'NO') {
+                certClass = 'bio-black-cell';
+                varietaClass = 'bio-black-cell';
+            }
+        }
+        
+        const row = `
+            <div class="print-table-row ${rowClass}">
+                <div class="print-table-cell">${linea}</div>
+                <div class="print-table-cell">${nomeFornitore || ''}</div>
+                <div class="print-table-cell">${giacenza}</div>
+                <div class="print-table-cell">${entrata}</div>
+                <div class="print-table-cell">${trasformata}</div>
+                <div class="print-table-cell">${rimanenza}</div>
+                <div class="print-table-cell ${certClass}">${cert}</div>
+                <div class="print-table-cell ${varietaClass}">${varieta}</div>
+                <div class="print-table-cell">${portata}</div>
+                <div class="print-table-cell">${inizio}</div>
+                <div class="print-table-cell">${fine}</div>
+                <div class="print-table-cell">${quantitaBase.toFixed(1)}</div>
+                <div class="print-table-cell">${concentratoFornitore.toFixed(1)}</div>
+                <div class="print-table-cell destinations-details">${destinationsInfo}</div>
+                <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${destinationIDs}</div>
+                <div class="print-table-cell" style="font-size: 6px;">${note}</div>
+            </div>
+        `;
+        
+        tbody.append(row);
+    });
+    
+    // RESTO DEL CODICE per totali seconda e torchiato rimane identico
+    let totalSeconda = 0;
+    let totalTorchiato = 0;
+    let concentratoSeconda = 0;
+    let concentratoTorchiato = 0;
+    const defaultSeconda = 5;
+    const defaultTorchiato = 6;
+    
+    $('.supplier-card').each(function() {
+        const quantitaTrasformata = parseFloat($(this).find('.quantita-trasformata').val()) || 0;
+        const linea = $(this).find('.linea-trasformazione').val();
+        
+        if (quantitaTrasformata > 0) {
+            if (linea === 'BOE/1100') {
+                totalSeconda += (quantitaTrasformata * defaultSeconda / 100);
+            }
+            totalTorchiato += (quantitaTrasformata * defaultTorchiato / 100);
+        }
+    });
+    
+    // Calcola concentrati
+    const brixSeconda = $('#brix-seconda-totale').val() || 'NAT';
+    const brixTorchiato = $('#brix-torchiato-totale').val() || '45';
+    
+    if (brixSeconda !== 'NAT') {
+        concentratoSeconda = parseFloat(calculateConcentrato(totalSeconda, brixSeconda));
+    }
+    if (brixTorchiato !== 'NAT') {
+        concentratoTorchiato = parseFloat(calculateConcentrato(totalTorchiato, brixTorchiato));
+    }
+    
+    // Genera ID per totali
+    const secondaData = {
+        polpa: $('#polpa-seconda-totale').val() || '<1%',
+        brix: brixSeconda,
+        pastorizzato: $('#pastorizzato-seconda-totale').val() || 'SI',
+        disoleato: $('#disoleato-seconda-totale').val() || 'NO',
+        conservato: $('#conservato-seconda-totale').val() || 'SI',
+        destinazione: $('#destinazione-seconda-totale').val() || 'NAT IN TINI',
+        bio: 'SI'
+    };
+    
+    const torchiatoData = {
+        polpa: $('#polpa-torchiato-totale').val() || '<1%',
+        brix: brixTorchiato,
+        pastorizzato: $('#pastorizzato-torchiato-totale').val() || 'SI',
+        disoleato: $('#disoleato-torchiato-totale').val() || 'NO',
+        conservato: $('#conservato-torchiato-totale').val() || 'NO',
+        destinazione: $('#destinazione-torchiato-totale').val() || 'CONCENTRATO',
+        bio: 'SI'
+    };
+    
+    const idSeconda = generateTotalProductID('SECONDA', secondaData);
+    const idTorchiato = generateTotalProductID('TORCHIATO', torchiatoData);
+    
+    // Aggiungi riga Totale Succo 2ª
+    if (totalSeconda > 0) {
+        const rowSeconda = `
+            <div class="print-table-row total-succo2-row">
+                <div class="print-table-cell">BOE/1100</div>
+                <div class="print-table-cell">TOTALE SUCCO 2ª</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">${totalSeconda.toFixed(1)}</div>
+                <div class="print-table-cell">${concentratoSeconda.toFixed(1)}</div>
+                <div class="print-table-cell">${secondaData.destinazione}<br/>Polpa: ${secondaData.polpa}<br/>°BX: ${secondaData.brix}</div>
+                <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${idSeconda}</div>
+                <div class="print-table-cell">TOTALE SUCCO 2ª<br/>LINEA BOE/1100</div>
+            </div>
+        `;
+        tbody.append(rowSeconda);
+    }
+    
+    // Aggiungi riga Totale Torchiato
+    if (totalTorchiato > 0) {
+        const rowTorchiato = `
+            <div class="print-table-row total-torchiato-row">
+                <div class="print-table-cell">TORCHI FASO</div>
+                <div class="print-table-cell">TOTALE TORCHIATO</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">-</div>
+                <div class="print-table-cell">${totalTorchiato.toFixed(1)}</div>
+                <div class="print-table-cell">${concentratoTorchiato.toFixed(1)}</div>
+                <div class="print-table-cell">${torchiatoData.destinazione}<br/>Polpa: ${torchiatoData.polpa}<br/>°BX: ${torchiatoData.brix}</div>
+                <div class="print-table-cell" style="font-family: 'Courier New', monospace; font-size: 6px;">${idTorchiato}</div>
+                <div class="print-table-cell">TOTALE TORCHIATO<br/>TUTTE LE LINEE</div>
+            </div>
+        `;
+        tbody.append(rowTorchiato);
+    }
+}
        
        // NUOVO: Aggiungi righe totali Succo 2ª e Torchiato
        let totalSeconda = 0;
