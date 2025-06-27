@@ -1128,6 +1128,19 @@ $(document).ready(function() {
    // MODIFICATA: Generazione codice ID prodotto senza spazi
    function generateProductID(card) {
        let id = "";
+
+      // NUOVA: Funzione per ottenere la quantità base (senza trasferimenti)
+function getBaseQuantity(card) {
+    const index = card.data('supplier-index');
+    
+    // Se ha composizione trasferimenti, usa la quantità base memorizzata
+    if (transferCompositionData[index]) {
+        return transferCompositionData[index].baseAmount;
+    }
+    
+    // Altrimenti usa il valore del campo quantità prima
+    return parseFloat(card.find('.quantita-prima').val()) || 0;
+}
        
        // Tipo prodotto
        id += "SU";
